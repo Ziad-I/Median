@@ -22,4 +22,12 @@ const getTagArticles = async (req: Request, res: Response) => {
   return res.status(200).json(articles);
 };
 
-export { getTagArticles };
+const getAllTags = async (req: Request, res: Response) => {
+  const tags = await Tag.find({});
+  if (!tags) {
+    return res.status(404).json({ message: "No tags found" });
+  }
+  return res.status(200).json(tags);
+};
+
+export { getTagArticles, getAllTags };
