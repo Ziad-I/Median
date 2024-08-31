@@ -4,8 +4,10 @@ import articleRouter from "./routers/articleRouter";
 import commentRouter from "./routers/commentRouter";
 import tagRouter from "./routers/tagRouter";
 import connectDB from "./config/db";
-import cors from "cors";
 import { ENV } from "./config/env";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swaggerOptions";
+import cors from "cors";
 
 const app: Express = express();
 
@@ -21,12 +23,17 @@ apiRouter.use("/comment", commentRouter);
 apiRouter.use("/tag", tagRouter);
 
 app.use("/api", apiRouter);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, { explorer: true })
+);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
-// connectDB();
+connectDB();
 
 app.listen(ENV.PORT, () => {
   console.log(`[server]: Server is running at http://localhost:${ENV.PORT}`);
