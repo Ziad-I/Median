@@ -1,8 +1,8 @@
-import express from "express";
+import express = require("express");
 
 declare global {
   namespace Express {
-    interface Request {
+    export interface Request {
       userId?: string;
     }
   }
