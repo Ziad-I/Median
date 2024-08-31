@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   bio: { type: String },
   avatar: { type: String }, // URL to the user's avatar image
-  created_at: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
   token: { type: String, unique: true },
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   followings: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
