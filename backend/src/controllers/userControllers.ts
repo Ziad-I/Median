@@ -1,6 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import User from "../models/userModel";
-import mongoose from "mongoose";
 
 const editUser = async (req: Request, res: Response) => {
   const userId = req.userId;
