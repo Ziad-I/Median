@@ -175,7 +175,6 @@ const forgotPassword = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "User not found" });
   }
 
-  // Generate a password reset token (expires in 1 hour)
   const resetToken = jwt.sign(
     { userId: user._id },
     ENV.RESET_PASSWORD_TOKEN_SECRET,
@@ -183,12 +182,13 @@ const forgotPassword = async (req: Request, res: Response) => {
       expiresIn: ENV.RESET_PASSWORD_TOKEN_EXPIRATION_TIME,
     }
   );
+
   const transportOptions: SMTPTransport.Options = {
-    host: ENV.MAILTRAP_HOST, // Correct host for Mailtrap
-    port: Number(ENV.MAILTRAP_PORT), // Ensure the port is a number
+    host: ENV.MAILTRAP_HOST,
+    port: Number(ENV.MAILTRAP_PORT),
     auth: {
-      user: ENV.MAILTRAP_USER, // Username for Mailtrap
-      pass: ENV.MAILTRAP_PASSWORD, // Corrected password environment variable
+      user: ENV.MAILTRAP_USER,
+      pass: ENV.MAILTRAP_PASSWORD,
     },
   };
   var transport = nodemailer.createTransport(transportOptions);
