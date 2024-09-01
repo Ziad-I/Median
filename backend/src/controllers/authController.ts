@@ -214,8 +214,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 };
 
 const resetPassword = async (req: Request, res: Response) => {
-  const { token } = req.query;
-  const { password: newPassword } = req.params;
+  const { token, newPassword } = req.params;
   if (!newPassword || !token) {
     return res.status(400).json({ message: "Invalid reset password data" });
   }
