@@ -16,7 +16,7 @@ const authMiddleware = async (
     if (!token) {
       throw new Error("Token not provided");
     }
-    const decoded = jwt.verify(token, ENV.JWT_SECRET) as JwtPayload;
+    const decoded = jwt.verify(token, ENV.ACCESS_TOKEN_SECRET) as JwtPayload;
     req.userId = decoded.userId;
     next();
   } catch (error) {

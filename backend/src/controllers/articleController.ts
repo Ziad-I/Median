@@ -5,7 +5,7 @@ import Tag from "../models/tagModel";
 const getArticlesAndAuthors = async (req: Request, res: Response) => {
   const articles = await Article.find({})
     .sort({ createdAt: -1 })
-    .populate("author", "username email avatar");
+    .populate("author", "name email avatar");
 
   return res.status(200).json(articles);
 };
@@ -18,7 +18,7 @@ const getAuthorArticles = async (req: Request, res: Response) => {
 
   const articles = await Article.find({ author: authorId })
     .sort({ createdAt: -1 })
-    .populate("author", "username email avatar");
+    .populate("author", "name email avatar");
 
   return res.status(200).json(articles);
 };
