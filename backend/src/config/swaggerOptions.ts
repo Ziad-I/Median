@@ -20,7 +20,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${ENV.BACKEND_PORT || 3000}`,
+        url: `http://localhost:${ENV.BACKEND_PORT || 3000}/api`,
       },
     ],
   },
