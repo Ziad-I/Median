@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getProfile,
   editUser,
   deleteUser,
   followUser,
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router
   .route("/profile")
+  .get(authMiddleware, getProfile)
   .put(authMiddleware, editUser)
   .delete(authMiddleware, deleteUser);
 

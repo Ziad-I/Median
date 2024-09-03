@@ -23,19 +23,19 @@ apiRouter.use("/article", articleRouter);
 apiRouter.use("/comment", commentRouter);
 apiRouter.use("/tag", tagRouter);
 apiRouter.use("/auth", authRouter);
-
-app.use("/api", apiRouter);
-app.use(
-  "/api-docs",
+apiRouter.use(
+  "/docs",
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, { explorer: true })
 );
+
+app.use("/api", apiRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
-connectDB();
+// connectDB();
 
 app.listen(ENV.BACKEND_PORT, () => {
   console.log(

@@ -1,6 +1,20 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
 
+const getProfile = async (req: Request, res: Response) => {
+  const userId = req.userId;
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  return res.status(200).json(user);
+};
+
 const editUser = async (req: Request, res: Response) => {
   const userId = req.userId;
   if (!userId) {
@@ -129,7 +143,7 @@ const unfollowUser = async (req: Request, res: Response) => {
 };
 
 const getUser = async (req: Request, res: Response) => {
-  const userId = req.userId;
+  const userId = req.body.userId;
   if (!userId) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -173,6 +187,7 @@ const getAllFollowings = async (req: Request, res: Response) => {
 };
 
 export {
+  getProfile,
   editUser,
   deleteUser,
   followUser,
