@@ -1,7 +1,7 @@
 /**
  * @swagger
  * tags:
- *   name: Tag
+ *   name: Tags
  *   description: API for managing tags
  */
 
@@ -12,10 +12,10 @@ const router = express.Router();
 
 /**
  * @swagger
- * /tags/{tagName}:
+ * /tags/tag/{tagName}:
  *   get:
  *     summary: Get all articles associated with a specific tag
- *     tags: [Tag]
+ *     tags: [Tags]
  *     parameters:
  *       - in: path
  *         name: tagName
@@ -31,20 +31,20 @@ const router = express.Router();
  *       404:
  *         description: Tag not found or no articles found for this tag
  */
-router.get("/tags/:tagName", getTagArticles);
+router.get("/tag/:tagName", getTagArticles);
 
 /**
  * @swagger
  * /tags:
  *   get:
  *     summary: Get all tags
- *     tags: [Tag]
+ *     tags: [Tags]
  *     responses:
  *       200:
  *         description: Successfully retrieved all tags
  *       404:
  *         description: No tags found
  */
-router.get("/tags", getAllTags);
+router.get("/", getAllTags);
 
 export default router;

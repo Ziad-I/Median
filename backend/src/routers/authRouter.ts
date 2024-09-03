@@ -21,7 +21,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /register:
+ * /auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -59,7 +59,7 @@ router.post("/register", register);
 
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Log in a user
  *     tags: [Auth]
@@ -91,7 +91,7 @@ router.post("/login", login);
 
 /**
  * @swagger
- * /logout:
+ * /auth/logout:
  *   post:
  *     summary: Log out a user
  *     tags: [Auth]
@@ -109,7 +109,7 @@ router.post("/logout", authMiddleware, logout);
 
 /**
  * @swagger
- * /refresh-token:
+ * /auth/refresh-token:
  *   post:
  *     summary: Refresh an access token using a refresh token
  *     tags: [Auth]
@@ -125,7 +125,7 @@ router.post("/refresh-token", refreshToken);
 
 /**
  * @swagger
- * /forgot-password:
+ * /auth/forgot-password:
  *   post:
  *     summary: Send a password reset email
  *     tags: [Auth]
@@ -153,7 +153,7 @@ router.post("/forgot-password", forgotPassword);
 
 /**
  * @swagger
- * /reset-password:
+ * /auth/reset-password:
  *   post:
  *     summary: Reset a user's password
  *     tags: [Auth]
@@ -187,7 +187,7 @@ router.post("/reset-password", resetPassword);
 // Uncomment and add JSDoc when you implement the verifyEmail function
 // /**
 //  * @swagger
-//  * /verify-email/{token}:
+//  * /auth/verify-email/{token}:
 //  *   get:
 //  *     summary: Verify a user's email
 //  *     tags: [Auth]

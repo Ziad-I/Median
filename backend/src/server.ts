@@ -19,10 +19,10 @@ app.use(express.urlencoded({ extended: false }));
 // Routers
 const apiRouter = express.Router();
 
-apiRouter.use("/user", userRouter);
-apiRouter.use("/article", articleRouter);
-apiRouter.use("/comment", commentRouter);
-apiRouter.use("/tag", tagRouter);
+apiRouter.use("/users", userRouter);
+apiRouter.use("/articles", articleRouter);
+apiRouter.use("/comments", commentRouter);
+apiRouter.use("/tags", tagRouter);
 apiRouter.use("/auth", authRouter);
 apiRouter.use(
   "/docs",

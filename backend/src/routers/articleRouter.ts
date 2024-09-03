@@ -1,7 +1,7 @@
 /**
  * @swagger
  * tags:
- *   name: Article
+ *   name: Articles
  *   description: API for managing articles
  */
 
@@ -23,7 +23,7 @@ const router = express.Router();
  * /articles/write:
  *   post:
  *     summary: Create a new article
- *     tags: [Article]
+ *     tags: [Articles]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -60,7 +60,7 @@ router.route("/write").post(authMiddleware, createArticle);
  * /articles/{articleId}:
  *   get:
  *     summary: Get an article by ID
- *     tags: [Article]
+ *     tags: [Articles]
  *     parameters:
  *       - in: path
  *         name: articleId
@@ -77,7 +77,7 @@ router.route("/write").post(authMiddleware, createArticle);
  *         description: Invalid article ID
  *   put:
  *     summary: Edit an article by ID
- *     tags: [Article]
+ *     tags: [Articles]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -113,7 +113,7 @@ router.route("/write").post(authMiddleware, createArticle);
  *         description: Article not found
  *   delete:
  *     summary: Delete an article by ID
- *     tags: [Article]
+ *     tags: [Articles]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -142,7 +142,7 @@ router
  * /articles/author/{authorId}:
  *   get:
  *     summary: Get all articles by an author
- *     tags: [Article]
+ *     tags: [Articles]
  *     parameters:
  *       - in: path
  *         name: authorId
@@ -165,7 +165,7 @@ router.route("/author/:authorId").get(getAuthorArticles);
  * /articles:
  *   get:
  *     summary: Get all articles with their authors
- *     tags: [Article]
+ *     tags: [Articles]
  *     responses:
  *       200:
  *         description: List of articles with authors

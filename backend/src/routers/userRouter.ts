@@ -1,7 +1,7 @@
 /**
  * @swagger
  * tags:
- *   name: User
+ *   name: Users
  *   description: API for managing users
  */
 
@@ -22,22 +22,20 @@ const router = express.Router();
 
 /**
  * @swagger
- * /profile:
+ * /users/profile:
  *   get:
  *     summary: Get the profile of the authenticated user
- *     tags: [User]
+ *     tags: [Users]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Successfully retrieved user profile
- *       401:
- *         description: Unauthorized
  *       404:
  *         description: User not found
  *   put:
  *     summary: Edit the profile of the authenticated user
- *     tags: [User]
+ *     tags: [Users]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -65,7 +63,7 @@ const router = express.Router();
  *         description: Failed to update user
  *   delete:
  *     summary: Delete the profile of the authenticated user
- *     tags: [User]
+ *     tags: [Users]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -86,10 +84,10 @@ router
 
 /**
  * @swagger
- * /{userId}:
+ * /users/profile/{userId}:
  *   get:
  *     summary: Get a user by ID
- *     tags: [User]
+ *     tags: [Users]
  *     parameters:
  *       - in: path
  *         name: userId
@@ -103,14 +101,14 @@ router
  *       404:
  *         description: User not found
  */
-router.route("/:userId").get(getUser);
+router.route("profile/:userId").get(getUser);
 
 /**
  * @swagger
- * /follow/{userId}:
+ * /users/follow/{userId}:
  *   put:
  *     summary: Follow a user
- *     tags: [User]
+ *     tags: [Users]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -134,10 +132,10 @@ router.route("follow/:userId").put(authMiddleware, followUser);
 
 /**
  * @swagger
- * /unfollow/{userId}:
+ * /users/unfollow/{userId}:
  *   put:
  *     summary: Unfollow a user
- *     tags: [User]
+ *     tags: [Users]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -161,10 +159,10 @@ router.route("unfollow/:userId").put(authMiddleware, unfollowUser);
 
 /**
  * @swagger
- * /followers/{userId}:
+ * /users/followers/{userId}:
  *   get:
  *     summary: Get all followers of a user
- *     tags: [User]
+ *     tags: [Users]
  *     parameters:
  *       - in: path
  *         name: userId
@@ -184,10 +182,10 @@ router.route("/followers/:userId").get(getAllFollowers);
 
 /**
  * @swagger
- * /followings/{userId}:
+ * /users/followings/{userId}:
  *   get:
  *     summary: Get all followings of a user
- *     tags: [User]
+ *     tags: [Users]
  *     parameters:
  *       - in: path
  *         name: userId

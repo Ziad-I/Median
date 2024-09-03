@@ -1,7 +1,7 @@
 /**
  * @swagger
  * tags:
- *   name: Comment
+ *   name: Comments
  *   description: API for managing comments on articles
  */
 
@@ -23,7 +23,7 @@ const router = express.Router();
  * /comments/article/{articleId}/comment:
  *   post:
  *     summary: Add a comment to an article
- *     tags: [Comment]
+ *     tags: [Comments]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -63,7 +63,7 @@ router
  * /comments/comment/{commentId}:
  *   get:
  *     summary: Get a comment by ID
- *     tags: [Comment]
+ *     tags: [Comments]
  *     parameters:
  *       - in: path
  *         name: commentId
@@ -80,7 +80,7 @@ router
  *         description: Invalid comment ID
  *   put:
  *     summary: Edit a comment by ID
- *     tags: [Comment]
+ *     tags: [Comments]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -112,7 +112,7 @@ router
  *         description: Comment not found
  *   delete:
  *     summary: Delete a comment by ID
- *     tags: [Comment]
+ *     tags: [Comments]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -143,7 +143,7 @@ router
  * /comments/article/{articleId}/comments:
  *   get:
  *     summary: Get all comments for an article
- *     tags: [Comment]
+ *     tags: [Comments]
  *     parameters:
  *       - in: path
  *         name: articleId
@@ -166,7 +166,7 @@ router.get("/article/:articleId/comments", getAllCommentsByArticle);
  * /comments/author/{authorId}/comments:
  *   get:
  *     summary: Get all comments by an author
- *     tags: [Comment]
+ *     tags: [Comments]
  *     security:
  *       - BearerAuth: []
  *     parameters:
