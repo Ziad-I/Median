@@ -18,7 +18,6 @@ const register = async (req: Request, res: Response) => {
     return res.status(409).json({ message: "Email already registered" });
   }
 
-  // Check if the username is already taken
   const existingUsername = await User.findOne({ username });
   if (existingUsername) {
     return res.status(409).json({ message: "Username already taken" });
