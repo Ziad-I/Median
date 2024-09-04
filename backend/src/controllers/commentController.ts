@@ -34,6 +34,8 @@ const commentOnArticle = async (req: Request, res: Response) => {
   await Article.findByIdAndUpdate(articleId, {
     $push: { comments: comment._id },
   });
+
+  return res.status(200).json({ message: "Comment created successfully" });
 };
 
 const editComment = async (req: Request, res: Response) => {
@@ -63,7 +65,7 @@ const editComment = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to update comment" });
   }
 
-  return res.status(200).json({ message: "comment updated successfully" });
+  return res.status(200).json({ message: "Comment updated successfully" });
 };
 
 const deleteComment = async (req: Request, res: Response) => {
@@ -101,10 +103,16 @@ const getComment = async (req: Request, res: Response) => {
   if (!commentId) {
     return res.status(400).json({ message: "Invalid comment ID" });
   }
-  const comment = await Comment.findById(commentId);
+
+  const comment = await Comment.findById(commentId).populate(
+    "author",
+    "name, avatar"
+  );
+
   if (!comment) {
     return res.status(404).json({ message: "Comment not found" });
   }
+
   return res.status(200).json(comment);
 };
 

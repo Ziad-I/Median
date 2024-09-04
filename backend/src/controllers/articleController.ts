@@ -5,7 +5,8 @@ import Tag from "../models/tagModel";
 const getArticlesAndAuthors = async (req: Request, res: Response) => {
   const articles = await Article.find({})
     .sort({ createdAt: -1 })
-    .populate("author", "name email avatar");
+    .populate("author", "name email avatar")
+    .populate("tags");
 
   return res.status(200).json(articles);
 };
@@ -18,7 +19,7 @@ const getAuthorArticles = async (req: Request, res: Response) => {
 
   const articles = await Article.find({ author: authorId })
     .sort({ createdAt: -1 })
-    .populate("author", "name email avatar");
+    .populate("tags");
 
   return res.status(200).json(articles);
 };
@@ -29,10 +30,24 @@ const getArticle = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Invalid article ID" });
   }
 
-  const article = await Article.findById(articleId).populate(
-    "comments",
-    "content, author, createdAt"
-  );
+  const article = await Article.findById(articleId)
+    .populate({
+      path: "comments",
+      select: "content createdAt",
+      populate: {
+        path: "author",
+        select: "name",
+      },
+    })
+    .populate({
+      path: "author",
+      select: "name email avatar",
+    })
+    .populate({
+      path: "tags",
+      select: "name",
+    });
+
   if (!article) {
     return res.status(404).json({ message: "Article not found" });
   }
@@ -74,7 +89,9 @@ const createArticle = async (req: Request, res: Response) => {
     })
   );
 
-  res.status(200).json(article);
+  res
+    .status(200)
+    .json({ message: "Article created successfuly", article: article });
 };
 
 const editArticle = async (req: Request, res: Response) => {
