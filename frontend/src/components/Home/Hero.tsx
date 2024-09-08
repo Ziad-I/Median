@@ -7,7 +7,7 @@ const Hero = () => (
       <div className="flex flex-col items-center space-y-4 text-center">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-            Welcome to Emerald Medium
+            Welcome to Median
           </h1>
           <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
             Discover stories, thinking, and expertise from writers on any topic.
