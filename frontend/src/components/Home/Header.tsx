@@ -7,7 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const Header = () => (
   <header className="px-4 lg:px-6 h-14 flex items-center border-b">
-    <Link className="flex items-center justify-center" href="#">
+    <Link className="flex items-center justify-center" href="/">
       <Feather className="h-6 w-6 text-primary" />
       <span className="sr-only">Median</span>
     </Link>
@@ -32,14 +32,14 @@ const Header = () => (
       </Link>
       <Link
         className="text-sm font-medium hover:underline underline-offset-4"
-        href="#"
+        href="/login"
       >
         Sign In
       </Link>
     </nav>
     <ThemeToggle />
-    <Button className="ml-4" variant="outline">
-      Get Started
+    <Button className="ml-4" variant="outline" asChild>
+      <Link href="/signup">Get Started</Link>
     </Button>
   </header>
 );

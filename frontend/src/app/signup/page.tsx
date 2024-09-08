@@ -38,11 +38,11 @@ export default function SignUp() {
     }
   })
 
-  async function onSubmit(values: any) {
-    setIsLoading(true)
-  
+  async function onSubmit(values: any, event:any) {
+    event.preventDefault()
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`
     try {
-      const response = await axios.post('/auth/register', values)
+      const response = await axios.post(url, values)
   
       if (response.status === 201) {
         toast({
@@ -98,7 +98,7 @@ export default function SignUp() {
                 control={form.control}
                 name="username"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="mt-3">
                     <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input placeholder="johndoe" disabled={isLoading} {...field} />
@@ -112,7 +112,7 @@ export default function SignUp() {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="mt-3">
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input placeholder="John Doe" disabled={isLoading} {...field} />
@@ -126,10 +126,10 @@ export default function SignUp() {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="mt-3">
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="m@example.com" disabled={isLoading} {...field} />
+                      <Input type="email" placeholder="m@example.com" autoComplete="email" disabled={isLoading} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -140,10 +140,10 @@ export default function SignUp() {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="mt-3">
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="••••••••" disabled={isLoading} {...field} />
+                      <Input type="password" placeholder="••••••••" autoComplete="password" disabled={isLoading} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

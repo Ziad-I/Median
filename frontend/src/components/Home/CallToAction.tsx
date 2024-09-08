@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
 
 const CallToAction = () => (
   <section className="w-full py-12 md:py-24 lg:py-32 bg-primary text-primary-foreground">
@@ -16,8 +18,9 @@ const CallToAction = () => (
         <Button
           className="bg-background text-primary hover:bg-secondary"
           size="lg"
+          asChild
         >
-          Create an account
+          <Link href="/signup"> Create an account</Link>
         </Button>
       </div>
     </div>
