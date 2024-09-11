@@ -8,7 +8,7 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const register = async (req: Request, res: Response) => {
-  const { username, name, email, password } = req.params;
+  const { username, name, email, password } = req.body;
   if (!username || !name || !email || !password) {
     return res.status(400).json({ message: "Invalid registration data" });
   }
@@ -56,7 +56,7 @@ const register = async (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
-  const { email, password } = req.params;
+  const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "Invalid login data" });
   }
@@ -164,7 +164,7 @@ const refreshToken = async (req: Request, res: Response) => {
 };
 
 const forgotPassword = async (req: Request, res: Response) => {
-  const { email } = req.params;
+  const { email } = req.body;
   if (!email) {
     return res.status(400).json({ message: "Invalid email" });
   }
@@ -213,7 +213,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 };
 
 const resetPassword = async (req: Request, res: Response) => {
-  const { token, newPassword } = req.params;
+  const { token, newPassword } = req.body;
   if (!newPassword || !token) {
     return res.status(400).json({ message: "Invalid reset password data" });
   }

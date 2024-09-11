@@ -3,7 +3,7 @@ import connectDB from "./config/db";
 import { app } from "./server";
 
 // Connect to the database
-// connectDB();
+connectDB();
 
 // Start the server
 app.listen(ENV.BACKEND_PORT, () => {
