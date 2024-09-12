@@ -61,37 +61,43 @@ const createArticle = async (req: Request, res: Response) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  let content: string = req.params.content ?? "";
-  const codeRegex = /<code>(.*?)<\/code>/g;
-  const withoutCode = content.replace(codeRegex, "");
-  let imgRegex = /<img.*?src=['"](.*?)['"]/;
-  let t = imgRegex.exec(content);
-  const imgUrl = t ? t[1] : undefined;
-  const htmlRegexG = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
-  const summary = withoutCode.replace(htmlRegexG, "");
+  const { title, content, summary, image, tags } = req.body;
 
-  const articleRef = new Article({
-    title: req.params.title,
-    content,
-    summary,
-    image: imgUrl,
-    author: userId,
-    tags: req.params.tags.split(","),
-  });
+  if (!title || !content || !summary) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
 
-  const article = await articleRef.save();
+  try {
+    // Prepare to create the article
+    const articleRef = new Article({
+      title,
+      content,
+      summary,
+      image,
+      author: userId,
+      tags: [], // Tags will be handled separately
+    });
 
-  // Handle tags
-  Promise.all(
-    article.tags.map(async (item) => {
-      const isTag = await Tag.findOne({ name: item });
-      if (!isTag) await new Tag({ name: item }).save();
-    })
-  );
+    const tagIds = await Promise.all(
+      tags.map(async (tagName: string) => {
+        let tag = await Tag.findOne({ name: tagName });
+        if (!tag) {
+          tag = new Tag({ name: tagName });
+          await tag.save();
+        }
+        return tag._id;
+      })
+    );
 
-  res
-    .status(200)
-    .json({ message: "Article created successfuly", article: article });
+    articleRef.tags = tagIds;
+
+    const article = await articleRef.save();
+
+    res.status(200).json({ message: "Article created successfully", article });
+  } catch (error) {
+    console.error("Error creating article:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
 };
 
 const editArticle = async (req: Request, res: Response) => {
