@@ -12,7 +12,7 @@ interface ArticleMarkdownProps {
   content: string;
 }
 
-const ArticleMarkdown: React.FC<ArticleMarkdownProps> = ({ content }) => {
+const MarkdownRenderer: React.FC<ArticleMarkdownProps> = ({ content }) => {
   return (
     <ReactMarkdown
       className="markdown"
@@ -43,4 +43,4 @@ const ArticleMarkdown: React.FC<ArticleMarkdownProps> = ({ content }) => {
   );
 };
 
-export default ArticleMarkdown;
+export default MarkdownRenderer;

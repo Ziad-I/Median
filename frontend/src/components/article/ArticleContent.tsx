@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Article } from "@/lib/definitions";
-import ArticleMarkdown from "./ArticleMarkdown";
+import MarkdownRenderer from "@/components/markdown/MarkdownRenderer";
 
 type ArticleContentProps = {
   article: Article;
@@ -20,7 +20,7 @@ export function ArticleContent({ article }: ArticleContentProps) {
         className="w-full h-64 object-cover rounded-lg mb-6"
       />
       <div className="prose max-w-none mb-8">
-        <ArticleMarkdown content={article.content}></ArticleMarkdown>
+        <MarkdownRenderer content={article.content}></MarkdownRenderer>
       </div>
       <div className="mb-8">
         {article.tags.map((tag) => (

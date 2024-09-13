@@ -8,7 +8,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { Comment } from "@/lib/definitions";
 import ConfirmDialog from "./ConfirmDialog";
-import ArticleMarkdown from "./ArticleMarkdown";
+import MarkdownRenderer from "@/components/markdown/MarkdownRenderer";
 
 type CommentCardProps = {
   comment: Comment;
@@ -57,7 +57,7 @@ export function CommentCard({
           />
         ) : (
           <>
-            <ArticleMarkdown content={comment.content}></ArticleMarkdown>
+            <MarkdownRenderer content={comment.content}></MarkdownRenderer>
           </>
         )}
       </CardContent>

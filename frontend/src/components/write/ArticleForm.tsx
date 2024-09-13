@@ -8,7 +8,7 @@ import axios from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
-import ArticleMarkdown from "@/components/article/ArticleMarkdown";
+import MarkdownRenderer from "@/components/markdown/MarkdownRenderer";
 
 // UI Components
 import { X } from "lucide-react";
@@ -229,7 +229,7 @@ export default function ArticleForm() {
             </TabsContent>
             <TabsContent value="preview">
               <div className="prose border border-border rounded-md p-4 max-h-[500px] min-h-[300px] overflow-auto">
-                <ArticleMarkdown content={form.watch("content")} />
+                <MarkdownRenderer content={form.watch("content")} />
               </div>
             </TabsContent>
           </Tabs>
