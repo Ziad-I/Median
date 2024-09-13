@@ -6,6 +6,10 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
+import remarkBreaks from "remark-breaks";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeSanitize from "rehype-sanitize";
 import "katex/dist/katex.min.css";
 
 interface ArticleMarkdownProps {
@@ -16,8 +20,14 @@ const MarkdownRenderer: React.FC<ArticleMarkdownProps> = ({ content }) => {
   return (
     <ReactMarkdown
       className="markdown"
-      remarkPlugins={[remarkGfm, remarkMath]}
-      rehypePlugins={[rehypeRaw, rehypeKatex]}
+      remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]}
+      rehypePlugins={[
+        rehypeRaw,
+        rehypeKatex,
+        rehypeSlug,
+        rehypeAutolinkHeadings,
+        rehypeSanitize,
+      ]}
       components={{
         code({ node, inline, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || "");
