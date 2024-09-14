@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import ArticleForm from '@/components/write/ArticleForm'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ArticleForm from "@/components/pages/write/ArticleForm";
 
 export default function WritePage() {
   return (
@@ -15,5 +15,5 @@ export default function WritePage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

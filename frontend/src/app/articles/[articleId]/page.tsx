@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Comment, Article } from "@/lib/definitions";
-import { ArticleContent } from "@/components/article/ArticleContent";
-import ArticleHeader from "@/components/article/ArticleHeader";
-import ArticleSkeleton from "@/components/article/ArticleSkeleton";
-import { CommentSection } from "@/components/article/CommentSection";
+import { ArticleContent } from "@/components/pages/article/ArticleContent";
+import ArticleHeader from "@/components/pages/article/ArticleHeader";
+import ArticleSkeleton from "@/components/pages/article/ArticleSkeleton";
+import { CommentSection } from "@/components/pages/article/CommentSection";
 
 // Simulated API call
 const fetchArticle = async (id: string): Promise<Article> => {

@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Eye, MessageCircle, TrendingUp, User } from "lucide-react"
-import { Sidebar } from '@/components/dashboard/Sidebar'
-import { StatCard } from '@/components/dashboard/StatCard'
-import { ArticlesList } from '@/components/dashboard/ArticlesList'
-import { CommentsList } from '@/components/dashboard/CommentsList'
-import { UserSettings } from '@/components/dashboard/UserSettings'
-import { FollowersList } from '@/components/dashboard/FollowersList'
-import { FollowingList } from '@/components/dashboard/FollowingList'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Eye, MessageCircle, TrendingUp, User } from "lucide-react";
+import { Sidebar } from "@/components/pages/dashboard/Sidebar";
+import { StatCard } from "@/components/pages/dashboard/StatCard";
+import { ArticlesList } from "@/components/pages/dashboard/ArticlesList";
+import { CommentsList } from "@/components/pages/dashboard/CommentsList";
+import { UserSettings } from "@/components/pages/dashboard/UserSettings";
+import { FollowersList } from "@/components/pages/dashboard/FollowersList";
+import { FollowingList } from "@/components/pages/dashboard/FollowingList";
 
 export default function Dashboard() {
   return (
@@ -43,7 +43,7 @@ export default function Dashboard() {
             />
           </div>
 
-          <Tabs defaultValue="articles"  className="mt-6">
+          <Tabs defaultValue="articles" className="mt-6">
             <TabsList>
               <TabsTrigger value="articles">Recent Articles</TabsTrigger>
               <TabsTrigger value="comments">Recent Comments</TabsTrigger>
@@ -70,5 +70,5 @@ export default function Dashboard() {
         </main>
       </div>
     </div>
-  )
+  );
 }

@@ -1,10 +1,17 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { Feather } from "lucide-react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import LogInForm from '@/components/Login/LogInForm'
-import SocialSignIn from '@/components/Login/SocialLogIn'
+import Link from "next/link";
+import { Feather } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import LogInForm from "@/components/pages/Login/LogInForm";
+import SocialSignIn from "@/components/pages/Login/SocialLogIn";
 
 export default function Login() {
   return (
@@ -14,7 +21,9 @@ export default function Login() {
           <div className="flex items-center justify-center mb-4">
             <Feather className="h-8 w-8 text-primary" />
           </div>
-          <CardTitle className="text-2xl text-center">Login to your account</CardTitle>
+          <CardTitle className="text-2xl text-center">
+            Login to your account
+          </CardTitle>
           <CardDescription className="text-center">
             Enter your email and password below to log in
           </CardDescription>
@@ -28,10 +37,11 @@ export default function Login() {
             Don&apos;t have an account?{" "}
             <Link href="/signup" className="underline hover:text-primary">
               Sign up here
-            </Link>.
+            </Link>
+            .
           </div>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

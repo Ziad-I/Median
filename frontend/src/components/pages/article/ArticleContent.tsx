@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Article } from "@/lib/definitions";
-import MarkdownRenderer from "@/components/markdown/MarkdownRenderer";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 type ArticleContentProps = {
   article: Article;

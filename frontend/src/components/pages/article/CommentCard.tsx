@@ -8,7 +8,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { Comment } from "@/lib/definitions";
 import ConfirmDialog from "./ConfirmDialog";
-import MarkdownRenderer from "@/components/markdown/MarkdownRenderer";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 type CommentCardProps = {
   comment: Comment;

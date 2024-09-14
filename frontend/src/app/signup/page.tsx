@@ -1,10 +1,17 @@
-'use client'
+"use client";
 
-import { Feather } from "lucide-react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { SignUpForm } from '@/components/Signup/SignUpForm'
-import { SocialSignUp } from '@/components/Signup/SoicialSignUp'
-import { Agreements } from '@/components/Signup/Agreements'
+import { Feather } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { SignUpForm } from "@/components/pages/Signup/SignUpForm";
+import { SocialSignUp } from "@/components/pages/Signup/SoicialSignUp";
+import { Agreements } from "@/components/pages/Signup/Agreements";
 
 export default function SignUp() {
   return (
@@ -14,7 +21,9 @@ export default function SignUp() {
           <div className="flex items-center justify-center mb-4">
             <Feather className="h-8 w-8 text-primary" />
           </div>
-          <CardTitle className="text-2xl text-center">Create an account</CardTitle>
+          <CardTitle className="text-2xl text-center">
+            Create an account
+          </CardTitle>
           <CardDescription className="text-center">
             Enter your details below to create your account
           </CardDescription>
@@ -28,5 +37,5 @@ export default function SignUp() {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

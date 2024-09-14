@@ -8,7 +8,7 @@ import axios from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
-import MarkdownRenderer from "@/components/markdown/MarkdownRenderer";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 // UI Components
 import { X } from "lucide-react";
