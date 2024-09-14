@@ -7,9 +7,10 @@ import { useAuthStore } from "@/providers/AuthStoreProvider";
 
 const withAuth = (WrappedComponent: any) => {
   return function WithAuth(props: any) {
-    const { isLoggedIn, accessToken } = useAuthStore((state) => state);
-    // const isAuthenticated = isLoggedIn && accessToken;
-    const isAuthenticated = true;
+    const { isLoggedIn, userId, accessToken } = useAuthStore((state) => state);
+    const isAuthenticated = isLoggedIn && accessToken;
+    console.log(isLoggedIn, userId, accessToken);
+    // const isAuthenticated = true;
     const router = useRouter();
 
     useEffect(() => {

@@ -18,6 +18,7 @@ import {
 import { useToast } from "@/hooks/UseToast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/providers/AuthStoreProvider";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Valid email is required" }),
@@ -28,6 +29,7 @@ const loginSchema = z.object({
 
 export default function LogInForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const login = useAuthStore((state) => state.login);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -53,6 +55,7 @@ export default function LogInForm() {
           description: "You have successfully logged in!",
           variant: "default",
         });
+        login(response.data.accessToken);
         router.push("/dashboard");
       }
     } catch (error: any) {

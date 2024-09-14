@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/UseToast";
+import { useAuthStore } from "@/providers/AuthStoreProvider";
 
 // Define validation schema with zod
 const signUpSchema = z.object({
@@ -30,6 +31,7 @@ const signUpSchema = z.object({
 
 export const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const login = useAuthStore((state) => state.login);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -57,6 +59,7 @@ export const SignUpForm = () => {
           description: "Your account has been successfully created!",
           variant: "default",
         });
+        login(response.data.accessToken);
         router.push("/dashboard");
       }
     } catch (error: any) {
