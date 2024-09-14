@@ -7,7 +7,7 @@ import { ArticleContent } from "@/components/pages/article/ArticleContent";
 import ArticleHeader from "@/components/pages/article/ArticleHeader";
 import ArticleSkeleton from "@/components/pages/article/ArticleSkeleton";
 import { CommentSection } from "@/components/pages/article/CommentSection";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 
 // Simulated API call
 const fetchArticle = async (id: string): Promise<Article> => {

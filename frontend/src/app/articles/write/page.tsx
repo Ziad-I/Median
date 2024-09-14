@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ArticleForm from "@/components/pages/write/ArticleForm";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 
 function WritePage() {
   return (
