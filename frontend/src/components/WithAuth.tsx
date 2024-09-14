@@ -2,16 +2,22 @@
 
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/providers/AuthStoreProvider";
 
 const withAuth = (WrappedComponent: any) => {
   return function WithAuth(props: any) {
-    const isAuthenticated = true; //TODO: check jwt
+    const { isLoggedIn, accessToken } = useAuthStore((state) => state);
+    // const isAuthenticated = isLoggedIn && accessToken;
+    const isAuthenticated = true;
+    const router = useRouter();
 
     useEffect(() => {
       if (!isAuthenticated) {
-        redirect("/login");
+        // redirect("/login");
+        router.push("/login");
       }
-    }, [isAuthenticated]);
+    }, [router, isAuthenticated]);
 
     if (!isAuthenticated) {
       return null;
