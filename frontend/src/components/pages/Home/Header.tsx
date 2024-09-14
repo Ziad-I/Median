@@ -87,16 +87,17 @@ const Header = () => {
       </nav>
       <ThemeToggle />
       {isLoggedIn ? (
-        <div className="flex items-center ml-4 space-x-2">
+        <div>
           <Button
             variant="ghost"
+            className="ml-1"
             onClick={handleLogout}
             disabled={isLoggingOut}
           >
             <LogOut className="mr-2 h-4 w-4" />
             {isLoggingOut ? "Logging out..." : "Logout"}
           </Button>
-          <Button variant="outline" asChild>
+          <Button className="ml-4" variant="outline" asChild>
             <Link href="/dashboard">
               <User className="mr-2 h-4 w-4" />
               Dashboard
@@ -104,7 +105,7 @@ const Header = () => {
           </Button>
         </div>
       ) : (
-        <Button className="ml-4" variant="outline" asChild>
+        <Button className="ml-2" variant="outline" asChild>
           <Link href="/signup">Get Started</Link>
         </Button>
       )}
