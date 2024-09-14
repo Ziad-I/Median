@@ -26,7 +26,7 @@ const Header = () => {
         {},
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`, // Add access token as authorization header
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -88,12 +88,6 @@ const Header = () => {
       <ThemeToggle />
       {isLoggedIn ? (
         <div className="flex items-center ml-4 space-x-2">
-          <Button variant="outline" asChild>
-            <Link href="/dashboard">
-              <User className="mr-2 h-4 w-4" />
-              Dashboard
-            </Link>
-          </Button>
           <Button
             variant="ghost"
             onClick={handleLogout}
@@ -101,6 +95,12 @@ const Header = () => {
           >
             <LogOut className="mr-2 h-4 w-4" />
             {isLoggingOut ? "Logging out..." : "Logout"}
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/dashboard">
+              <User className="mr-2 h-4 w-4" />
+              Dashboard
+            </Link>
           </Button>
         </div>
       ) : (
