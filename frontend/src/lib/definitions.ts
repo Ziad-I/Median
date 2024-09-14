@@ -1,5 +1,5 @@
 export type User = {
-  _id: number
+  _id: string;
   username: string;
   name: string;
   email: string;
@@ -9,7 +9,7 @@ export type User = {
 };
 
 export type Article = {
-  _id: number
+  _id: string;
   title: string;
   content: string;
   summary: string;
@@ -22,11 +22,11 @@ export type Article = {
 };
 
 export type Comment = {
-  _id: number
+  _id: string;
   content: string;
   article?: Article;
   author: User;
   createdAt: Date;
 };
 
-export type Tag = {  _id: number, name: string };
+export type Tag = { _id: string; name: string };
