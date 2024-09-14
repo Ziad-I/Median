@@ -1,50 +1,59 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import axios from 'axios'
-import { z } from "zod"
-import Link from "next/link"
-import { useRouter } from 'next/navigation'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { useToast } from "@/hooks/use-toast"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import axios from "axios";
+import { z } from "zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToast } from "@/hooks/UseToast";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Valid email is required" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
-})
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
+});
 
 export default function LogInForm() {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { toast } = useToast()
-  const router = useRouter()
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: ''
-    }
-  })
+      email: "",
+      password: "",
+    },
+  });
 
   async function onSubmit(values: any, event: any) {
-    event.preventDefault()
-    setIsLoading(true)
+    event.preventDefault();
+    setIsLoading(true);
 
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`;
     try {
-      const response = await axios.post(url, values)
+      const response = await axios.post(url, values);
 
       if (response.status === 200) {
         toast({
           title: "Login Successful",
           description: "You have successfully logged in!",
           variant: "default",
-        })
-        router.push('/dashboard')
+        });
+        router.push("/dashboard");
       }
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -52,16 +61,16 @@ export default function LogInForm() {
           title: "Unauthorized",
           description: "Invalid email or password. Please try again.",
           variant: "destructive",
-        })
+        });
       } else {
         toast({
           title: "Unexpected Error",
           description: "An unexpected error occurred. Please try again later.",
           variant: "destructive",
-        })
+        });
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -75,7 +84,13 @@ export default function LogInForm() {
             <FormItem className="mt-3">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="m@example.com" autoComplete="email" disabled={isLoading} {...field} />
+                <Input
+                  type="email"
+                  placeholder="m@example.com"
+                  autoComplete="email"
+                  disabled={isLoading}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,21 +103,30 @@ export default function LogInForm() {
             <FormItem className="mt-3">
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="••••••••" autoComplete="password" disabled={isLoading} {...field} />
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  autoComplete="password"
+                  disabled={isLoading}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <div className="flex justify-end text-sm mt-2">
-          <Link href="/forgot-password" className="underline hover:text-primary">
+          <Link
+            href="/forgot-password"
+            className="underline hover:text-primary"
+          >
             Forgot Password?
           </Link>
         </div>
         <Button className="w-full mt-6" type="submit" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Login'}
+          {isLoading ? "Loading..." : "Login"}
         </Button>
       </form>
     </Form>
-  )
+  );
 }

@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/form";
 
 // Hooks
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/UseToast";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
