@@ -13,7 +13,7 @@ import {
 import LogInForm from "@/components/pages/Login/LogInForm";
 import SocialSignIn from "@/components/pages/Login/SocialLogIn";
 
-export default function Login() {
+export default function LoginPage() {
   return (
     <div className="container mx-auto my-10 flex w-screen flex-col items-center justify-center">
       <Card className="w-[350px]">

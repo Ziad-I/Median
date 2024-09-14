@@ -7,6 +7,7 @@ import { ArticleContent } from "@/components/pages/article/ArticleContent";
 import ArticleHeader from "@/components/pages/article/ArticleHeader";
 import ArticleSkeleton from "@/components/pages/article/ArticleSkeleton";
 import { CommentSection } from "@/components/pages/article/CommentSection";
+import withAuth from "@/components/withAuth";
 
 // Simulated API call
 const fetchArticle = async (id: string): Promise<Article> => {
@@ -74,7 +75,7 @@ interface ArticlePageProps {
   currentUserId: number;
 }
 
-export default function ArticlePage({ currentUserId = 1 }: ArticlePageProps) {
+function ArticlePage({ currentUserId = 1 }: ArticlePageProps) {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,3 +121,5 @@ export default function ArticlePage({ currentUserId = 1 }: ArticlePageProps) {
     </div>
   );
 }
+
+export default withAuth(ArticlePage);

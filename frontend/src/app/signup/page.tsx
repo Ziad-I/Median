@@ -13,7 +13,7 @@ import { SignUpForm } from "@/components/pages/Signup/SignUpForm";
 import { SocialSignUp } from "@/components/pages/Signup/SoicialSignUp";
 import { Agreements } from "@/components/pages/Signup/Agreements";
 
-export default function SignUp() {
+export default function SignUpPage() {
   return (
     <div className="container mx-auto my-10 flex w-screen flex-col items-center justify-center">
       <Card className="w-[350px]">

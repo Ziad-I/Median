@@ -9,8 +9,9 @@ import { CommentsList } from "@/components/pages/dashboard/CommentsList";
 import { UserSettings } from "@/components/pages/dashboard/UserSettings";
 import { FollowersList } from "@/components/pages/dashboard/FollowersList";
 import { FollowingList } from "@/components/pages/dashboard/FollowingList";
+import withAuth from "@/components/withAuth";
 
-export default function Dashboard() {
+function DashboardPage() {
   return (
     <div className="flex h-screen bg-background">
       {/* <Sidebar /> */}
@@ -72,3 +73,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default withAuth(DashboardPage);

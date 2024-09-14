@@ -2,8 +2,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ArticleForm from "@/components/pages/write/ArticleForm";
+import withAuth from "@/components/withAuth";
 
-export default function WritePage() {
+function WritePage() {
   return (
     <div className="container mx-auto p-4">
       <Card>
@@ -17,3 +18,5 @@ export default function WritePage() {
     </div>
   );
 }
+
+export default withAuth(WritePage);
