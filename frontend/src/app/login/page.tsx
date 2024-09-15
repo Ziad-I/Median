@@ -10,8 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import LogInForm from "@/components/pages/Login/LogInForm";
-import SocialSignIn from "@/components/pages/Login/SocialLogIn";
+import LogInForm from "@/components/pages/login/LogInForm";
+import SocialSignIn from "@/components/pages/login/SocialLogIn";
 
 export default function LoginPage() {
   return (

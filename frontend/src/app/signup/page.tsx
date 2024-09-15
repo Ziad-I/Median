@@ -9,9 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SignUpForm } from "@/components/pages/Signup/SignUpForm";
-import { SocialSignUp } from "@/components/pages/Signup/SoicialSignUp";
-import { Agreements } from "@/components/pages/Signup/Agreements";
+import { SignUpForm } from "@/components/pages/signup/SignUpForm";
+import { SocialSignUp } from "@/components/pages/signup/SoicialSignUp";
+import { Agreements } from "@/components/pages/signup/Agreements";
 
 export default function SignUpPage() {
   return (

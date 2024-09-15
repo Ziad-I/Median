@@ -1,8 +1,8 @@
 "use client";
 
-import Hero from "@/components/pages/Home/Hero";
-import FeaturedArticles from "@/components/pages/Home/FeaturedArticles";
-import CallToAction from "@/components/pages/Home/CallToAction";
+import Hero from "@/components/pages/home/Hero";
+import FeaturedArticles from "@/components/pages/home/FeaturedArticles";
+import CallToAction from "@/components/pages/home/CallToAction";
 
 export default function LandingPage() {
   return (

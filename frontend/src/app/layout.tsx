@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "@/components/pages/Home/Header";
-import Footer from "@/components/pages/Home/Footer";
+import Header from "@/components/pages/home/Header";
+import Footer from "@/components/pages/home/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/providers/Providers";
 import "./globals.css";
