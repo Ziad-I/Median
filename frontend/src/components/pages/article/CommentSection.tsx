@@ -10,38 +10,23 @@ import {
 import { CommentCard } from "./CommentCard";
 import { NewCommentForm } from "./NewCommentForm";
 import { Comment } from "@/lib/definitions";
+import { useAuthStore } from "@/providers/AuthStoreProvider";
 
 type CommentSectionProps = {
   comments: Comment[];
-  currentUserId: number;
 };
 
 export const CommentSection = React.memo(function CommentSection({
   comments: initialComments,
-  currentUserId,
 }: CommentSectionProps) {
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [comments, setComments] = useState<Comment[]>(initialComments);
 
-  const handleAddComment = (newCommentContent: string) => {
-    if (!newCommentContent.trim()) return;
-
-    const newComment: Comment = {
-      _id: Date.now(),
-      content: newCommentContent,
-      author: {
-        _id: currentUserId,
-        username: "currentuser",
-        name: "Current User",
-        email: "currentuser@example.com",
-        createdAt: new Date(),
-      },
-      createdAt: new Date(),
-    };
-
+  const handleAddComment = (newComment: Comment) => {
     setComments((prevComments) => [...prevComments, newComment]);
   };
 
-  const handleEditComment = (commentId: number, newContent: string) => {
+  const handleEditComment = (commentId: string, newContent: string) => {
     setComments((prevComments) =>
       prevComments.map((comment) =>
         comment._id === commentId
@@ -51,7 +36,7 @@ export const CommentSection = React.memo(function CommentSection({
     );
   };
 
-  const handleDeleteComment = (commentId: number) => {
+  const handleDeleteComment = (commentId: string) => {
     setComments((prevComments) =>
       prevComments.filter((comment) => comment._id !== commentId)
     );
@@ -68,7 +53,6 @@ export const CommentSection = React.memo(function CommentSection({
             <CommentCard
               key={comment._id}
               comment={comment}
-              currentUserId={currentUserId}
               onEdit={handleEditComment}
               onDelete={handleDeleteComment}
             />
@@ -76,7 +60,10 @@ export const CommentSection = React.memo(function CommentSection({
         </div>
       </CardContent>
       <CardFooter>
-        <NewCommentForm onAddComment={handleAddComment} />
+        <NewCommentForm
+          disabled={!isLoggedIn}
+          onAddComment={handleAddComment}
+        />
       </CardFooter>
     </Card>
   );

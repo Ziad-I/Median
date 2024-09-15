@@ -41,7 +41,7 @@ const getArticle = async (req: Request, res: Response) => {
     })
     .populate({
       path: "author",
-      select: "name email avatar",
+      select: "_id name email avatar",
     })
     .populate({
       path: "tags",

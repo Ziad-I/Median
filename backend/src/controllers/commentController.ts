@@ -122,9 +122,11 @@ const getAllCommentsByArticle = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Invalid article ID" });
   }
 
-  const comments = await Comment.find({ article: articleId }).sort({
-    createdAt: -1,
-  });
+  const comments = await Comment.find({ article: articleId })
+    .populate("author", "name, avatar")
+    .sort({
+      createdAt: -1,
+    });
 
   if (!comments) {
     return res

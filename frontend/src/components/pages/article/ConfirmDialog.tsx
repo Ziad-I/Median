@@ -1,5 +1,3 @@
-// ConfirmDialog.tsx
-import { ReactNode } from "react";
 import {
   AlertDialog,
   AlertDialogAction,

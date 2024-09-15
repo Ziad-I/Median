@@ -1,5 +1,3 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Article } from "@/lib/definitions";

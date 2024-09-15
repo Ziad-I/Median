@@ -1,11 +1,11 @@
 export type User = {
-  _id: string;
-  username: string;
+  _id?: string;
+  username?: string;
   name: string;
-  email: string;
+  email?: string;
   bio?: string;
   avatar?: string;
-  createdAt: Date;
+  createdAt?: Date;
 };
 
 export type Article = {
@@ -25,7 +25,11 @@ export type Comment = {
   _id: string;
   content: string;
   article?: Article;
-  author: User;
+  author: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
   createdAt: Date;
 };
 

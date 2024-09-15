@@ -9,23 +9,19 @@ import { format } from "date-fns";
 import { Comment } from "@/lib/definitions";
 import ConfirmDialog from "./ConfirmDialog";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import { useAuthStore } from "@/providers/AuthStoreProvider";
 
 type CommentCardProps = {
   comment: Comment;
-  currentUserId: number;
-  onEdit: (id: number, content: string) => void;
-  onDelete: (id: number) => void;
+  onEdit: (id: string, content: string) => void;
+  onDelete: (id: string) => void;
 };
 
-export function CommentCard({
-  comment,
-  currentUserId,
-  onEdit,
-  onDelete,
-}: CommentCardProps) {
+export function CommentCard({ comment, onEdit, onDelete }: CommentCardProps) {
+  const { userId } = useAuthStore((state) => state);
   const [isEditing, setIsEditing] = useState(false);
   const [newContent, setNewContent] = useState(comment.content);
-  const isAuthor = currentUserId === comment.author._id;
+  const isAuthor = userId === comment.author._id;
 
   const handleSaveEdit = () => {
     onEdit(comment._id, newContent);

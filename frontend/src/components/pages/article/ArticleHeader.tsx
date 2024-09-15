@@ -1,4 +1,3 @@
-// components/ArticleHeader.tsx
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -6,18 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { Article } from "@/lib/definitions";
 import ConfirmDialog from "./ConfirmDialog";
+import { useAuthStore } from "@/providers/AuthStoreProvider";
 
 interface ArticleHeaderProps {
   article: Article;
-  currentUserId: number;
 }
 
-export default function ArticleHeader({
-  article,
-  currentUserId,
-}: ArticleHeaderProps) {
+export default function ArticleHeader({ article }: ArticleHeaderProps) {
+  const { userId } = useAuthStore((state) => state);
   const router = useRouter();
-  const isAuthor = currentUserId === article.author._id;
+  const isAuthor = userId === article.author._id;
 
   const handleEdit = () => {
     router.push(`/edit-article/${article._id}`);
