@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import SearchBar from "@/components/pages/allArticles/SearchBar";
-import TagFilter from "@/components/pages/allArticles/TagFilter";
-import ArticleList from "@/components/pages/allArticles/ArticleList";
-import PaginationControls from "@/components/pages/allArticles/PaginationControls";
-import AllArticlesSkeleton from "@/components/pages/allArticles/AllArticlesSkeleton";
+import SearchBar from "@/components/pages/AllArticles/SearchBar";
+import TagFilter from "@/components/pages/AllArticles/TagFilter";
+import ArticleList from "@/components/pages/AllArticles/ArticleList";
+import PaginationControls from "@/components/pages/AllArticles/PaginationControls";
+import AllArticlesSkeleton from "@/components/pages/AllArticles/AllArticlesSkeleton";
 import { Button } from "@/components/ui/button";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
