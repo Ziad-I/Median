@@ -24,7 +24,7 @@ const fetchArticle = async (id: string): Promise<Article> => {
       "Explore how AI is transforming content creation, from writing assistance to personalized content at scale.",
     image: "/placeholder.svg?height=400&width=800",
     author: {
-      _id: "66e5c100c26d1f1d5cd5d467",
+      _id: "66e17c04c0fab701814a5eb0",
       name: "Alex Johnson",
       email: "alex@example.com",
       avatar: "/placeholder.svg?height=100&width=100",
@@ -42,7 +42,7 @@ const fetchArticle = async (id: string): Promise<Article> => {
         content:
           "Great article! I'm excited to see how AI continues to evolve in this space.",
         author: {
-          _id: "66e5c100c26d1f1d5cd5d467",
+          _id: "66e17c04c0fab701814a5eb0",
           name: "Sam Smith",
           avatar: "",
         },

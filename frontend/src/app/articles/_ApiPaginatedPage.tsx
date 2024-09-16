@@ -83,7 +83,7 @@ async function fetchTags(): Promise<string[]> {
   return tags;
 }
 
-export default function AllArticlesPage() {
+function AllArticlesPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(
