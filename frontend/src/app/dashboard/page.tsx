@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Eye, MessageCircle, TrendingUp, User } from "lucide-react";
+import { Eye, MessageCircle, TrendingUp, User as UserIcon } from "lucide-react";
 import { Sidebar } from "@/components/pages/dashboard/Sidebar";
 import { StatCard } from "@/components/pages/dashboard/StatCard";
 import { ArticlesList } from "@/components/pages/dashboard/ArticlesList";
@@ -9,6 +9,7 @@ import { CommentsList } from "@/components/pages/dashboard/CommentsList";
 import { UserSettings } from "@/components/pages/dashboard/UserSettings";
 import { FollowersList } from "@/components/pages/dashboard/FollowersList";
 import { FollowingList } from "@/components/pages/dashboard/FollowingList";
+import { UserProfileCard } from "@/components/pages/dashboard/UserProfileCard";
 import withAuth from "@/components/WithAuth";
 
 function DashboardPage() {
@@ -16,6 +17,8 @@ function DashboardPage() {
     <div className="flex min-h-screen bg-background">
       {/* <Sidebar /> */}
       <div className="flex-1 p-6">
+        <UserProfileCard />
+
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
           <StatCard
             title="Total Views"
@@ -27,7 +30,7 @@ function DashboardPage() {
             title="Followers"
             value="2,350"
             description="+180 new followers"
-            icon={User}
+            icon={UserIcon}
           />
           <StatCard
             title="Total Articles"
