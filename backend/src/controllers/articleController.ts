@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Article from "../models/articleModel";
 import Tag from "../models/tagModel";
+import cloudinaryUploadImage from "../config/cloudinary";
 
 const getArticlesAndAuthors = async (req: Request, res: Response) => {
   const articles = await Article.find({})
@@ -36,7 +37,7 @@ const getArticle = async (req: Request, res: Response) => {
       select: "content createdAt",
       populate: {
         path: "author",
-        select: "name",
+        select: "_id name avatar",
       },
     })
     .populate({
@@ -68,12 +69,14 @@ const createArticle = async (req: Request, res: Response) => {
   }
 
   try {
-    // Prepare to create the article
+    let imageUrl = "";
+    if (image) imageUrl = await cloudinaryUploadImage(image);
+
     const articleRef = new Article({
       title,
       content,
       summary,
-      image,
+      imageUrl,
       author: userId,
       tags: [], // Tags will be handled separately
     });
@@ -116,7 +119,19 @@ const editArticle = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "Article not found" });
   }
 
-  const updateResult = await Article.updateOne({ _id: articleId }, req.params);
+  // handle having new tags and old tags
+  const tagIds = await Promise.all(
+    req.body.tags.map(async (tagName: string) => {
+      let tag = await Tag.findOne({ name: tagName });
+      if (!tag) {
+        tag = new Tag({ name: tagName });
+        await tag.save();
+      }
+      return tag._id;
+    })
+  );
+  req.body.tags = tagIds;
+  const updateResult = await Article.updateOne({ _id: articleId }, req.body);
   if (updateResult.modifiedCount !== 1) {
     return res.status(500).json({ message: "Failed to update article" });
   }
