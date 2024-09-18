@@ -7,12 +7,9 @@ import { ArticleContent } from "@/components/pages/article/ArticleContent";
 import ArticleHeader from "@/components/pages/article/ArticleHeader";
 import ArticleSkeleton from "@/components/pages/article/ArticleSkeleton";
 import { CommentSection } from "@/components/pages/article/CommentSection";
-import withAuth from "@/components/WithAuth";
-import { useAuthStore } from "@/providers/AuthStoreProvider";
+import { useToast } from "@/hooks/UseToast";
 
-// Simulated API call
 const fetchArticle = async (id: string): Promise<Article> => {
-  // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const articleData: Article = {
@@ -69,22 +66,28 @@ function ArticlePage() {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
   const params = useParams();
 
   useEffect(() => {
     const getArticle = async () => {
       try {
-        const data = await fetchArticle(params.id as string);
+        const data = await fetchArticle(params.articleId as string);
         setArticle(data);
       } catch (err) {
         setError("An error occurred while fetching the article");
+        toast({
+          title: "Error",
+          description: "Failed to fetch article data. Please try again.",
+          variant: "destructive",
+        });
       } finally {
         setLoading(false);
       }
     };
 
     getArticle();
-  }, [params.id]);
+  }, [params.articleId, toast]);
 
   if (loading) {
     return <ArticleSkeleton />;

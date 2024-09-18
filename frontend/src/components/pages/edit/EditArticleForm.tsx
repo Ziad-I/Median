@@ -1,16 +1,14 @@
 "use client";
 
-// External Libraries
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm as useHookForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 
-// UI Components
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,9 +23,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// Hooks
 import { useToast } from "@/hooks/UseToast";
 import { useAuthStore } from "@/providers/AuthStoreProvider";
+import { Article } from "@/lib/definitions";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -37,23 +35,28 @@ const formSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-export default function ArticleForm() {
+interface EditArticleFormProps {
+  article: Article;
+}
+
+export function EditArticleForm({ article }: EditArticleFormProps) {
+  const tagNames: string[] = article.tags.map((tag) => tag.name);
   const { accessToken } = useAuthStore((state) => state);
-  const [image, setImage] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [image, setImage] = useState(article.image || "");
+  const [tags, setTags] = useState<string[]>(tagNames);
   const [currentTag, setCurrentTag] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useHookForm({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      summary: "",
-      content: "",
-      image: "",
-      tags: [],
+      title: article.title,
+      summary: article.summary,
+      content: article.content,
+      image: article.image,
+      tags: article.tags,
     },
   });
 
@@ -84,12 +87,13 @@ export default function ArticleForm() {
     event.preventDefault();
     setIsLoading(true);
 
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/write`;
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/${article._id}`;
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         url,
         {
           title: data.title,
+          summary: data.summary,
           content: data.content,
           tags: tags,
           image: data.image,
@@ -103,11 +107,11 @@ export default function ArticleForm() {
 
       if (response.status === 200) {
         toast({
-          title: "Article Created",
-          description: "Your article has been successfully published!",
+          title: "Article Updated",
+          description: "Your article has been successfully updated!",
           variant: "default",
         });
-        router.push("/dashboard");
+        router.push(`/articles/${article._id}`);
       }
     } catch (error: any) {
       if (error.response?.status === 400) {
@@ -119,7 +123,7 @@ export default function ArticleForm() {
       } else if (error.response?.status === 401) {
         toast({
           title: "Unauthorized",
-          description: "You are not authorized. Please login again.",
+          description: "You are not authorized to edit this article.",
           variant: "destructive",
         });
       } else {
@@ -175,7 +179,13 @@ export default function ArticleForm() {
             />
           </FormControl>
           {image && (
-            <Image src={image} alt="Cover" className="mt-2 max-w-xs rounded" />
+            <Image
+              src={image}
+              alt="Cover"
+              width={300}
+              height={200}
+              className="mt-2 rounded"
+            />
           )}
         </FormItem>
 
@@ -240,7 +250,7 @@ export default function ArticleForm() {
         </FormItem>
 
         <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Publishing..." : "Publish Article"}
+          {isLoading ? "Updating..." : "Update Article"}
         </Button>
       </form>
     </Form>
