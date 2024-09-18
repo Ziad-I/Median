@@ -28,7 +28,7 @@ function EditArticlePage() {
       try {
         const response = await axios.get(url);
 
-        if (response.data.userId !== userId) {
+        if (response.data._id !== userId) {
           toast({
             title: "Unauthorized",
             description: "You cannot edit an article you didn't publish!",
