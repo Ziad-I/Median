@@ -33,9 +33,6 @@ const Header = () => {
         </Link>
         <HeaderButtons />
       </nav>
-      <div className="ml-4">
-        <ThemeToggle />
-      </div>
     </header>
   );
 };

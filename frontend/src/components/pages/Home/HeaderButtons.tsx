@@ -6,8 +6,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { User, Rocket, LogOut, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthStore } from "@/providers/AuthStoreProvider";
 import { useToast } from "@/hooks/UseToast";
+import ThemeToggle from "./ThemeToggle";
 
 const HeaderButtons = () => {
   const [isHydrated, setIsHydrated] = useState(false);
@@ -55,7 +57,14 @@ const HeaderButtons = () => {
     }
   };
 
-  if (!isHydrated) return null;
+  if (!isHydrated)
+    return (
+      <>
+        <Skeleton className="h-10 w-24 mr-2" />
+        <Skeleton className="h-10 w-24 mr-2" />
+        <Skeleton className="h-10 w-10 ml-4" />
+      </>
+    );
 
   return (
     <>
@@ -73,6 +82,9 @@ const HeaderButtons = () => {
               Get Started
             </Link>
           </Button>
+          <div className="ml-4">
+            <ThemeToggle />
+          </div>
         </>
       ) : (
         <>
