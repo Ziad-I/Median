@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthStore } from "@/providers/AuthStoreProvider";
 import { useToast } from "@/hooks/UseToast";
-import ThemeToggle from "./ThemeToggle";
 
 const HeaderButtons = () => {
   const [isHydrated, setIsHydrated] = useState(false);
@@ -82,9 +81,6 @@ const HeaderButtons = () => {
               Get Started
             </Link>
           </Button>
-          <div className="ml-4">
-            <ThemeToggle />
-          </div>
         </>
       ) : (
         <>
