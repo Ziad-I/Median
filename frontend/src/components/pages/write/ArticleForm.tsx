@@ -90,6 +90,7 @@ export default function ArticleForm() {
         url,
         {
           title: data.title,
+          summary: data.summary,
           content: data.content,
           tags: tags,
           image: data.image,
@@ -175,7 +176,13 @@ export default function ArticleForm() {
             />
           </FormControl>
           {image && (
-            <Image src={image} alt="Cover" className="mt-2 max-w-xs rounded" />
+            <Image
+              src={image}
+              width={400}
+              height={400}
+              alt="Cover"
+              className="mt-2 max-w-xs rounded"
+            />
           )}
         </FormItem>
 

@@ -56,7 +56,7 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
       summary: article.summary,
       content: article.content,
       image: article.image,
-      tags: article.tags,
+      tags: tagNames,
     },
   });
 
@@ -86,7 +86,6 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
   const onSubmit = async (data: any, event: any) => {
     event.preventDefault();
     setIsLoading(true);
-
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/${article._id}`;
     try {
       const response = await axios.put(
@@ -138,9 +137,15 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
     }
   };
 
+  const onError = async (data: any) => {
+    console.log(data);
+  };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+        className="space-y-4"
+      >
         <FormItem className="mt-3">
           <FormLabel htmlFor="title">Title</FormLabel>
           <FormControl>

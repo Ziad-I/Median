@@ -79,7 +79,9 @@ function EditPage() {
       setIsLoading(true);
       const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/${articleId}`;
       try {
-        // const response = await axios.get(url);
+        const response = await axios.get(url);
+        setArticle(response.data);
+        console.log(response.data);
         // if (response.data.author._id !== userId) {
         //   toast({
         //     title: "Unauthorized",
@@ -88,17 +90,6 @@ function EditPage() {
         //   });
         //   router.push(`/articles/${articleId}`);
         // }
-        // setArticle(response.data);
-        const articleData = await simulateFetchArticle(articleId);
-        if (articleData.author._id !== userId) {
-          toast({
-            title: "Unauthorized",
-            description: "You cannot edit an article you didn't publish!",
-            variant: "destructive",
-          });
-          router.push(`/articles/${articleId}`);
-        }
-        setArticle(articleData);
       } catch (err) {
         setError("Failed to fetch article data. Please try again.");
         toast({
@@ -106,14 +97,14 @@ function EditPage() {
           description: "Failed to fetch article data. Please try again.",
           variant: "destructive",
         });
-        //   router.push(`/articles/${articleId}`);
+        // router.push(`/articles/${articleId}`);
       } finally {
         setIsLoading(false);
       }
     }
 
     fetchArticle();
-  }, [articleId, toast, userId, router]);
+  }, []);
 
   return (
     <div className="container mx-auto p-4">

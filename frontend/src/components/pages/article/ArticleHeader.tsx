@@ -17,7 +17,7 @@ export default function ArticleHeader({ article }: ArticleHeaderProps) {
   const isAuthor = userId === article.author._id;
 
   const handleEdit = () => {
-    router.push(`/edit-article/${article._id}`);
+    router.push(`/articles/${article._id}/edit`);
   };
 
   const handleDelete = async () => {

@@ -8,8 +8,10 @@ import ArticleHeader from "@/components/pages/article/ArticleHeader";
 import ArticleSkeleton from "@/components/pages/article/ArticleSkeleton";
 import { CommentSection } from "@/components/pages/article/CommentSection";
 import { useToast } from "@/hooks/UseToast";
+import axios from "axios";
 
-const fetchArticle = async (id: string): Promise<Article> => {
+// Simulation function (kept as is)
+const fetchArticleSimulated = async (id: string): Promise<Article> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const articleData: Article = {
@@ -71,9 +73,10 @@ function ArticlePage() {
 
   useEffect(() => {
     const getArticle = async () => {
+      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/${params.articleId}`;
       try {
-        const data = await fetchArticle(params.articleId as string);
-        setArticle(data);
+        const response = await axios.get(url);
+        setArticle(response.data);
       } catch (err) {
         setError("An error occurred while fetching the article");
         toast({
