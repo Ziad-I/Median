@@ -11,12 +11,12 @@ import { useToast } from "@/hooks/UseToast";
 import axios from "axios";
 
 // Simulation function (kept as is)
-const fetchArticleSimulated = async (id: string): Promise<Article> => {
+const fetchArticleSimulated = async (slug: string): Promise<Article> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-
+  const title = slug.split("-").join(" ");
   const articleData: Article = {
-    _id: id,
-    title: "The Future of AI in Content Creation",
+    _id: "id",
+    title: title,
     content:
       "# Introduction\n\nArtificial Intelligence (AI) is revolutionizing many industries, and content creation is no exception. In this article, we'll explore how AI is shaping the future of content creation.\n\n## AI-Powered Writing Assistants\n\nAI writing assistants are becoming increasingly sophisticated, helping content creators to:\n\n- Generate ideas\n- Improve grammar and style\n- Optimize content for SEO\n\n## Personalized Content at Scale\n\nAI enables the creation of personalized content for individual users, taking into account their preferences, behavior, and demographics.\n\n## Challenges and Ethical Considerations\n\nWhile AI offers many benefits, it also raises important questions:\n\n1. Will AI replace human writers?\n2. How do we ensure AI-generated content is ethical and unbiased?\n3. What is the impact on creativity and originality?\n\n# Conclusion\n\nAI is set to play a significant role in the future of content creation, offering both exciting opportunities and important challenges to address.",
     summary:
@@ -73,7 +73,7 @@ function ArticlePage() {
 
   useEffect(() => {
     const getArticle = async () => {
-      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/${params.articleId}`;
+      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/title/${params.slug}`;
       try {
         const response = await axios.get(url);
         setArticle(response.data);
@@ -90,7 +90,7 @@ function ArticlePage() {
     };
 
     getArticle();
-  }, [params.articleId, toast]);
+  }, [params.slug]);
 
   if (loading) {
     return <ArticleSkeleton />;

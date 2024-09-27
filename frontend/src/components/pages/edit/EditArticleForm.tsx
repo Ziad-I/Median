@@ -26,6 +26,7 @@ import {
 import { useToast } from "@/hooks/UseToast";
 import { useAuthStore } from "@/providers/AuthStoreProvider";
 import { Article } from "@/lib/definitions";
+import { generateSlug } from "@/lib/slugify";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -110,7 +111,8 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
           description: "Your article has been successfully updated!",
           variant: "default",
         });
-        router.push(`/articles/${article._id}`);
+        const slug = generateSlug(data.title);
+        router.push(`/articles/${slug}`);
       }
     } catch (error: any) {
       if (error.response?.status === 400) {

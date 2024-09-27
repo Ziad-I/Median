@@ -56,6 +56,41 @@ const getArticle = async (req: Request, res: Response) => {
   return res.status(200).json(article);
 };
 
+const getArticleByTitle = async (req: Request, res: Response) => {
+  const slug = req.params.title;
+  console.log(slug);
+  if (!slug) {
+    return res.status(400).json({ message: "Invalid article title" });
+  }
+
+  const title = slug.split("-").join(" ");
+  console.log(title);
+  const article = await Article.findOne({ title: title })
+    .collation({ locale: "en", strength: 2 })
+    .populate({
+      path: "comments",
+      select: "content createdAt",
+      populate: {
+        path: "author",
+        select: "_id name avatar",
+      },
+    })
+    .populate({
+      path: "author",
+      select: "_id name email avatar",
+    })
+    .populate({
+      path: "tags",
+      select: "name",
+    });
+
+  if (!article) {
+    return res.status(404).json({ message: "Article not found" });
+  }
+
+  return res.status(200).json(article);
+};
+
 const createArticle = async (req: Request, res: Response) => {
   const userId = req.userId;
   if (!userId) {
@@ -167,6 +202,7 @@ export {
   getArticlesAndAuthors,
   getAuthorArticles,
   getArticle,
+  getArticleByTitle,
   createArticle,
   editArticle,
   deleteArticle,

@@ -66,7 +66,7 @@ const simulateFetchArticle = async (id: string): Promise<Article> => {
 
 function EditPage() {
   const params = useParams();
-  const articleId = params.articleId as string;
+  const titleSlug = params.slug as string;
   const { userId } = useAuthStore((state) => state);
   const [article, setArticle] = useState<Article | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -77,19 +77,18 @@ function EditPage() {
   useEffect(() => {
     async function fetchArticle() {
       setIsLoading(true);
-      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/${articleId}`;
+      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/title/${params.slug}`;
       try {
         const response = await axios.get(url);
         setArticle(response.data);
-        console.log(response.data);
-        // if (response.data.author._id !== userId) {
-        //   toast({
-        //     title: "Unauthorized",
-        //     description: "You cannot edit an article you didn't publish!",
-        //     variant: "destructive",
-        //   });
-        //   router.push(`/articles/${articleId}`);
-        // }
+        if (response.data.author._id !== userId) {
+          toast({
+            title: "Unauthorized",
+            description: "You cannot edit an article you didn't publish!",
+            variant: "destructive",
+          });
+          router.push(`/articles/${titleSlug}`);
+        }
       } catch (err) {
         setError("Failed to fetch article data. Please try again.");
         toast({
@@ -97,7 +96,7 @@ function EditPage() {
           description: "Failed to fetch article data. Please try again.",
           variant: "destructive",
         });
-        // router.push(`/articles/${articleId}`);
+        router.push(`/articles/${titleSlug}`);
       } finally {
         setIsLoading(false);
       }

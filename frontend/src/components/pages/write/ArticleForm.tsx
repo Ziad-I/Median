@@ -9,7 +9,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
-
+import { generateSlug } from "@/lib/slugify";
 // UI Components
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -108,7 +108,8 @@ export default function ArticleForm() {
           description: "Your article has been successfully published!",
           variant: "default",
         });
-        router.push("/dashboard");
+        const slug = generateSlug(data.title);
+        router.push(`/articles/${slug}`);
       }
     } catch (error: any) {
       if (error.response?.status === 400) {

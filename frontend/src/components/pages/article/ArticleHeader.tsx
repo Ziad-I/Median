@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -14,10 +14,11 @@ interface ArticleHeaderProps {
 export default function ArticleHeader({ article }: ArticleHeaderProps) {
   const { userId } = useAuthStore((state) => state);
   const router = useRouter();
+  const params = useParams();
   const isAuthor = userId === article.author._id;
 
   const handleEdit = () => {
-    router.push(`/articles/${article._id}/edit`);
+    router.push(`/articles/${params.slug}/edit`);
   };
 
   const handleDelete = async () => {

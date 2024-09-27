@@ -10,6 +10,7 @@ import {
   getArticlesAndAuthors,
   getAuthorArticles,
   getArticle,
+  getArticleByTitle,
   createArticle,
   editArticle,
   deleteArticle,
@@ -136,6 +137,29 @@ router
   .get(getArticle)
   .put(authMiddleware, editArticle)
   .delete(authMiddleware, deleteArticle);
+
+/**
+ * @swagger
+ * /articles/title/{title}:
+ *   get:
+ *     summary: Get an article by title
+ *     tags: [Articles]
+ *     parameters:
+ *       - in: path
+ *         name: title
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The article title in slug format (e.g., "the-future-of-ai-in-content-creation")
+ *     responses:
+ *       200:
+ *         description: The article data
+ *       404:
+ *         description: Article not found
+ *       400:
+ *         description: Invalid article title
+ */
+router.route("/title/:title").get(getArticleByTitle);
 
 /**
  * @swagger
