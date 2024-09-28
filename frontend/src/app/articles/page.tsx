@@ -1,38 +1,42 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useQueryState } from "nuqs";
 import SearchBar from "@/components/pages/AllArticles/SearchBar";
 import TagFilter from "@/components/pages/AllArticles/TagFilter";
 import ArticleList from "@/components/pages/AllArticles/ArticleList";
 import PaginationControls from "@/components/pages/AllArticles/PaginationControls";
 import AllArticlesSkeleton from "@/components/pages/AllArticles/AllArticlesSkeleton";
 import { Button } from "@/components/ui/button";
+import { Article, Tag } from "@/lib/definitions";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-interface Article {
-  id: number;
-  title: string;
-  excerpt: string;
-  author: string;
-  date: string;
-  tags: string[];
-}
 
 export async function fetchArticles(): Promise<Article[]> {
   await delay(1000); // Simulate network delay
 
-  // Simulated article data
-  const articles = Array.from({ length: 50 }, (_, i) => ({
-    id: i + 1,
+  const articles: Article[] = Array.from({ length: 50 }, (_, i) => ({
+    _id: `${i + 1}`,
     title: `Article ${i + 1}`,
-    excerpt: `This is a short excerpt for Article ${
+    content: `Content for Article ${i + 1}`,
+    summary: `This is a short excerpt for Article ${
       i + 1
     }. Click to read more.`,
-    author: `Author ${i + 1}`,
-    date: new Date(2023, 0, i + 1).toLocaleDateString(),
-    tags: [`Tag ${(i % 5) + 1}`, `Tag ${(i % 3) + 6}`],
+    image: "/placeholder.svg?height=400&width=800",
+    author: {
+      _id: `${i + 1}`,
+      name: `Author ${i + 1}`,
+      email: `author${i + 1}@example.com`,
+      avatar: "/placeholder.svg?height=100&width=100",
+    },
+    tags: [
+      { _id: "1", name: `Tag ${(i % 5) + 1}` },
+      { _id: "2", name: `Tag ${(i % 3) + 6}` },
+    ],
+    createdAt: new Date(2023, 0, i + 1),
+    updatedAt: new Date(2023, 0, i + 2),
+    comments: [],
   }));
 
   return articles;
@@ -41,7 +45,6 @@ export async function fetchArticles(): Promise<Article[]> {
 export async function fetchTags(): Promise<string[]> {
   await delay(500); // Simulate network delay
 
-  // Simulated tag data
   const tags = Array.from(
     new Set(
       Array.from({ length: 50 }, (_, i) => [
@@ -56,28 +59,24 @@ export async function fetchTags(): Promise<string[]> {
 
 export default function AllArticlesPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState(
-    searchParams.get("search") || ""
-  );
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useQueryState("search", {
+    defaultValue: "",
+  });
+  const [selectedTags, setSelectedTags] = useQueryState<string[]>("tags", {
+    defaultValue: [],
+    parse: (value) => (value ? value.split(",") : []),
+    serialize: (value) => value.join(","),
+  });
+  const [currentPage, setCurrentPage] = useQueryState("page", {
+    defaultValue: 1,
+    parse: Number,
+  });
+
   const [articles, setArticles] = useState<Article[]>([]);
   const [allTags, setAllTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const itemsPerPage = 10;
-
-  useEffect(() => {
-    const tags = searchParams.get("tags");
-    if (tags) {
-      setSelectedTags(tags.split(","));
-    }
-    const page = searchParams.get("page");
-    if (page) {
-      setCurrentPage(Number(page));
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     async function fetchData() {
@@ -103,7 +102,9 @@ export default function AllArticlesPage() {
     (article) =>
       article.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (selectedTags.length === 0 ||
-        selectedTags.some((tag) => article.tags.includes(tag)))
+        selectedTags.some((tag) =>
+          article.tags.map((t: Tag) => t.name).includes(tag)
+        ))
   );
 
   const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
@@ -113,26 +114,14 @@ export default function AllArticlesPage() {
   );
 
   const handleSearch = () => {
-    const params = new URLSearchParams();
-    params.set("search", searchTerm);
-    if (selectedTags.length > 0) {
-      params.set("tags", selectedTags.join(","));
-    }
-    params.set("page", "1");
-    router.push(`/articles?${params.toString()}`);
+    setCurrentPage(1); // Reset to page 1 on search
+    router.push(`/articles`);
   };
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
-  };
-
-  const updatePage = (page: number) => {
-    setCurrentPage(page);
-    const params = new URLSearchParams(searchParams);
-    params.set("page", page.toString());
-    router.push(`/articles?${params.toString()}`);
   };
 
   if (isLoading) {
@@ -164,7 +153,7 @@ export default function AllArticlesPage() {
       <PaginationControls
         currentPage={currentPage}
         totalPages={totalPages}
-        updatePage={updatePage}
+        updatePage={setCurrentPage}
       />
     </div>
   );
