@@ -88,7 +88,7 @@ export function CommentsList() {
             ))}
           </div>
         ) : error ? (
-          <p className="text-sm text-destructive">{error}</p>
+          <p className="text-sm text-destructive-foreground">{error}</p>
         ) : (
           <div className="space-y-4">
             {comments.map((comment) => (

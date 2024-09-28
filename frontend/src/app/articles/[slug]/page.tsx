@@ -97,7 +97,9 @@ function ArticlePage() {
   }
 
   if (error) {
-    return <div className="text-center text-destructive">{error}</div>;
+    return (
+      <div className="text-center text-destructive-foreground">{error}</div>
+    );
   }
 
   if (!article) {

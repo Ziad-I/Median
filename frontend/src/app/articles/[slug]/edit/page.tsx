@@ -115,7 +115,7 @@ function EditPage() {
           {isLoading ? (
             <EditArticleSkeleton />
           ) : error ? (
-            <p className="text-destructive">{error}</p>
+            <p className="text-destructive-foreground">{error}</p>
           ) : (
             article && <EditArticleForm article={article} />
           )}

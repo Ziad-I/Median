@@ -132,7 +132,7 @@ export default function AllArticlesPage() {
     return (
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-8">All Articles</h1>
-        <p className="text-destructive">{error}</p>
+        <p className="text-destructive-foreground">{error}</p>
       </div>
     );
   }

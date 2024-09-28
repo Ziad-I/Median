@@ -125,7 +125,7 @@ export function UserProfileHeader() {
 
   if (error || !userProfile) {
     return (
-      <div className="text-destructive">
+      <div className="text-destructive-foreground">
         {error || "Failed to load user profile"}
       </div>
     );

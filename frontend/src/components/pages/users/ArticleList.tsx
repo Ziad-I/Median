@@ -80,7 +80,7 @@ export function ArticleList() {
   }
 
   if (error) {
-    return <div className="text-destructive">{error}</div>;
+    return <div className="text-destructive-foreground">{error}</div>;
   }
 
   if (articles.length === 0) {

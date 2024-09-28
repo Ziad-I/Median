@@ -80,7 +80,7 @@ export function UserPreviewList({ type }: { type: "followers" | "following" }) {
   }
 
   if (error) {
-    return <div className="text-destructive">{error}</div>;
+    return <div className="text-destructive-foreground">{error}</div>;
   }
 
   if (users.length === 0) {
