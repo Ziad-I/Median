@@ -21,7 +21,13 @@ import { useAuthStore } from "@/providers/AuthStoreProvider";
 
 // Define validation schema with zod
 const signUpSchema = z.object({
-  username: z.string().min(1, { message: "Username is required" }),
+  username: z
+    .string()
+    .min(1, { message: "Username is required" })
+    .regex(/^[A-Za-z0-9_-]+$/, {
+      message:
+        "Username can only contain letters, numbers, underscores (_), and hyphens (-)",
+    }),
   name: z.string().min(1, { message: "Name is required" }),
   email: z.string().email({ message: "Valid email is required" }),
   password: z

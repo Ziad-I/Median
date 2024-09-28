@@ -1,7 +1,18 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: function (v: string) {
+        return /^[A-Za-z0-9_-]+$/.test(v); // Only allow letters, numbers, _ and -
+      },
+      message: (props) =>
+        `${props.value} can only contain letters, numbers, underscores (_), and hyphens (-)!`,
+    },
+  },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
