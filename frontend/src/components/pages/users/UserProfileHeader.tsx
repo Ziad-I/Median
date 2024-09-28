@@ -7,34 +7,13 @@ import { CalendarDays, Users } from "lucide-react";
 import { useToast } from "@/hooks/UseToast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
+import { User } from "@/lib/definitions";
 
-type UserProfile = {
-  id: string;
-  username: string;
-  name: string;
-  bio: string;
-  avatar: string;
-  followersCount: number;
-  followingCount: number;
-  joinedAt: string;
-  isFollowing: boolean;
-};
-
-// Simulated API call
-const fetchUserProfile = async (userId: string): Promise<UserProfile> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return {
-    id: userId,
-    username: "JohnDoe",
-    name: "John Doe",
-    bio: "Passionate writer and tech enthusiast. Sharing thoughts on AI, web development, and the future of technology.",
-    avatar: "/placeholder.svg?height=100&width=100",
-    followersCount: 1000,
-    followingCount: 500,
-    joinedAt: "2022-01-01T00:00:00Z",
-    isFollowing: false,
-  };
-};
+interface UserProfileHeaderProps {
+  isLoading: boolean;
+  userProfile: User | null;
+  error: string | null;
+}
 
 function UserProfileHeaderSkeleton() {
   return (
@@ -55,69 +34,46 @@ function UserProfileHeaderSkeleton() {
   );
 }
 
-export function UserProfileHeader() {
+export function UserProfileHeader({
+  isLoading,
+  userProfile,
+  error,
+}: UserProfileHeaderProps) {
   const params = useParams();
-  const userId = params.userId as string;
-
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const fetchProfile = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const profile = await fetchUserProfile(userId);
-      setUserProfile(profile);
-    } catch (error) {
-      setError("Failed to fetch user profile. Please try again.");
-      toast({
-        title: "Error",
-        description: "Failed to fetch user profile. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [userId, toast]);
-
-  useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
-
-  const handleFollowToggle = useCallback(async () => {
-    if (!userProfile) return;
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setUserProfile((prev) =>
-        prev
-          ? {
-              ...prev,
-              isFollowing: !prev.isFollowing,
-              followersCount: prev.isFollowing
-                ? prev.followersCount - 1
-                : prev.followersCount + 1,
-            }
-          : null
-      );
-      toast({
-        title: userProfile.isFollowing ? "Unfollowed" : "Followed",
-        description: `You have ${
-          userProfile.isFollowing ? "unfollowed" : "followed"
-        } ${userId}`,
-        variant: "default",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: `Failed to ${
-          userProfile.isFollowing ? "unfollow" : "follow"
-        } user. Please try again.`,
-        variant: "destructive",
-      });
-    }
-  }, [userProfile, userId, toast]);
+  // const handleFollowToggle = useCallback(async () => {
+  //   if (!userProfile) return;
+  //   try {
+  //     await new Promise((resolve) => setTimeout(resolve, 500));
+  //     setUserProfile((prev) =>
+  //       prev
+  //         ? {
+  //             ...prev,
+  //             isFollowing: !prev.isFollowing,
+  //             followersCount: prev.isFollowing
+  //               ? prev.followersCount - 1
+  //               : prev.followersCount + 1,
+  //           }
+  //         : null
+  //     );
+  //     toast({
+  //       title: userProfile.isFollowing ? "Unfollowed" : "Followed",
+  //       description: `You have ${
+  //         userProfile.isFollowing ? "unfollowed" : "followed"
+  //       } ${userId}`,
+  //       variant: "default",
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: `Failed to ${
+  //         userProfile.isFollowing ? "unfollow" : "follow"
+  //       } user. Please try again.`,
+  //       variant: "destructive",
+  //     });
+  //   }
+  // }, [userProfile, userId, toast]);
 
   if (isLoading) {
     return <UserProfileHeaderSkeleton />;
@@ -144,7 +100,7 @@ export function UserProfileHeader() {
         <div className="flex justify-center md:justify-start items-center space-x-4 mt-4">
           <div className="flex items-center">
             <Users className="mr-2 h-4 w-4" />
-            <span>{userProfile.followersCount} followers</span>
+            <span>{userProfile.followerCount} followers</span>
           </div>
           <div className="flex items-center">
             <Users className="mr-2 h-4 w-4" />
@@ -152,14 +108,15 @@ export function UserProfileHeader() {
           </div>
           <div className="flex items-center">
             <CalendarDays className="mr-2 h-4 w-4" />
-            <span>
-              Joined {new Date(userProfile.joinedAt).toLocaleDateString()}
-            </span>
+            <span>Joined {userProfile.createdAt.toLocaleDateString()}</span>
           </div>
         </div>
       </div>
-      <Button onClick={handleFollowToggle}>
-        {userProfile.isFollowing ? "Unfollow" : "Follow"}
+      <Button
+      // onClick={handleFollowToggle}
+      >
+        {/* {userProfile.isFollowing ? "Unfollow" : "Follow"} */}
+        Follow
       </Button>
     </div>
   );
