@@ -13,5 +13,19 @@ const userSchema = new mongoose.Schema({
   followings: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
+// Virtual for followerCount
+userSchema.virtual("followerCount").get(function () {
+  return this.followers.length;
+});
+
+// Virtual for followingCount
+userSchema.virtual("followingCount").get(function () {
+  return this.followings.length;
+});
+
+// Ensure virtual fields are serialized
+userSchema.set("toJSON", { virtuals: true });
+userSchema.set("toObject", { virtuals: true });
+
 const User = mongoose.model("User", userSchema);
 export default User;

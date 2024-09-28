@@ -1,10 +1,12 @@
 export type User = {
   _id?: string;
   username?: string;
-  name: string;
+  name?: string;
   email?: string;
   bio?: string;
   avatar?: string;
+  followerCount?: number;
+  followingCount?: number;
   createdAt?: Date;
 };
 
