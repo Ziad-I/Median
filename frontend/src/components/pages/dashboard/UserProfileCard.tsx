@@ -1,26 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Eye,
-  MessageCircle,
-  TrendingUp,
-  User as UserIcon,
-  Calendar,
-} from "lucide-react";
-import { Sidebar } from "@/components/pages/dashboard/Sidebar";
-import { StatCard } from "@/components/pages/dashboard/StatCard";
-import { ArticlesList } from "@/components/pages/dashboard/ArticlesList";
-import { CommentsList } from "@/components/pages/dashboard/CommentsList";
-import { UserSettings } from "@/components/pages/dashboard/UserSettings";
-import { FollowersList } from "@/components/pages/dashboard/FollowersList";
-import { FollowingList } from "@/components/pages/dashboard/FollowingList";
-import withAuth from "@/components/WithAuth";
+import { Calendar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User } from "@/lib/definitions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/UseToast";
 
 // Simulated user data fetch
 const fetchUserData = async () => {
@@ -37,6 +23,7 @@ const fetchUserData = async () => {
 export function UserProfileCard() {
   const [userData, setUserData] = useState<User>();
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -45,6 +32,11 @@ export function UserProfileCard() {
         setUserData(data);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
+        toast({
+          title: "Error",
+          description: `Failed to fetch user data. Please try again.`,
+          variant: "destructive",
+        });
       } finally {
         setIsLoading(false);
       }
