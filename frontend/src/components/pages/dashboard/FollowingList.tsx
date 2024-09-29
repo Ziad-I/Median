@@ -1,37 +1,129 @@
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
+"use client";
 
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CalendarIcon } from "lucide-react";
+import { useAuthStore } from "@/providers/AuthStoreProvider";
+import { useToast } from "@/hooks/UseToast";
+import axios from "axios";
 interface Following {
-  id: number
-  name: string
-  followDate: string
+  _id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  createdAt: Date;
 }
 
-const fetchFollowing = () => new Promise<Following[]>(resolve => setTimeout(() => resolve([
-  { id: 1, name: "Grace", followDate: "2023-04-01" },
-  { id: 2, name: "Henry", followDate: "2023-04-15" },
-  { id: 3, name: "Ivy", followDate: "2023-05-01" },
-]), 1200))
+const fetchFollowing = () =>
+  new Promise<Following[]>((resolve) =>
+    setTimeout(
+      () =>
+        resolve([
+          {
+            _id: "1",
+            username: "alice",
+            name: "Alice Johnson",
+            avatar: "/placeholder.svg?height=50&width=50",
+            createdAt: new Date(),
+          },
+          {
+            _id: "2",
+            username: "bob",
+            name: "Bob Smith",
+            avatar: "/placeholder.svg?height=50&width=50",
+            createdAt: new Date(),
+          },
+          {
+            _id: "3",
+            username: "charlie",
+            name: "Charlie Brown",
+            avatar: "/placeholder.svg?height=50&width=50",
+            createdAt: new Date(),
+          },
+        ]),
+      1200
+    )
+  );
+
+function FollowingCardSkeleton() {
+  return (
+    <Card className="mb-4">
+      <CardContent className="flex items-center space-x-4 py-4">
+        <Skeleton className="h-10 w-10 rounded-full" />
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-3 w-32" />
+        </div>
+        <Skeleton className="h-9 w-24 mr-2" />
+        <Skeleton className="h-9 w-24" />
+      </CardContent>
+    </Card>
+  );
+}
 
 export function FollowingList() {
-  const [following, setFollowing] = useState<Following[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [following, setFollowing] = useState<Following[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { accessToken } = useAuthStore((state) => state);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchFollowing()
-      .then(data => {
-        setFollowing(data)
-        setLoading(false)
+      .then((data) => {
+        setFollowing(data);
+        setLoading(false);
       })
-      .catch(err => {
-        setError("Failed to load following")
-        setLoading(false)
-      })
-  }, [])
+      .catch((err) => {
+        setError("Failed to load followings");
+        toast({
+          title: "Error",
+          description: `Failed to fetch followings. Please try again.`,
+          variant: "destructive",
+        });
+        setLoading(false);
+      });
+  }, []);
+
+  const handleUnfollow = async (userId: string) => {
+    try {
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/unfollow/${userId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Attach the access token
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setFollowing((prev) => prev.filter((user) => user._id !== userId));
+        toast({
+          title: "Success",
+          description: "User unfollowed successfully",
+        });
+      }
+    } catch (error) {
+      console.error("Error unfollowing user:", error);
+      toast({
+        title: "Error",
+        description: "Failed to unfollow user",
+        variant: "destructive",
+      });
+      setError("Failed to unfollow user");
+    }
+  };
 
   return (
     <Card>
@@ -43,37 +135,49 @@ export function FollowingList() {
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center space-x-4">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
-                </div>
-              </div>
+              <FollowingCardSkeleton key={i} />
             ))}
           </div>
         ) : error ? (
-          <p className="text-sm text-red-500">{error}</p>
+          <p className="text-sm text-destructive-foreground">{error}</p>
         ) : (
           <div className="space-y-4">
             {following.map((follow) => (
-              <div key={follow.id} className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage src={`/placeholder.svg?height=40&width=40`} alt={follow.name} />
-                  <AvatarFallback>{follow.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-medium leading-none">{follow.name}</p>
-                  <p className="text-sm text-muted-foreground">Followed since {new Date(follow.followDate).toLocaleDateString()}</p>
-                </div>
-                <Button size="sm" variant="outline" className="ml-auto">
-                  Unfollow
-                </Button>
-              </div>
+              <Card key={follow._id} className="mb-4">
+                <CardContent className="flex items-center space-x-4 py-4">
+                  <Avatar>
+                    <AvatarImage src={follow.avatar} alt={follow.name} />
+                    <AvatarFallback>{follow.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium leading-none">
+                      {follow.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground flex items-center mt-1">
+                      <CalendarIcon className="mr-1 h-3 w-3" />
+                      Joined on {follow.createdAt.toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Link href={`/users/${follow.username}`}>
+                      <Button size="sm" variant="outline">
+                        View Profile
+                      </Button>
+                    </Link>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleUnfollow(follow._id)}
+                    >
+                      Unfollow
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

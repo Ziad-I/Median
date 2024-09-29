@@ -1,4 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -8,13 +11,14 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CalendarIcon, MessageCircle } from "lucide-react";
 
 interface Comment {
-  id: number;
+  _id: number;
   author: string;
   articleTitle: string;
   content: string;
-  postedAt: string;
+  createdAt: string;
 }
 
 const fetchComments = () =>
@@ -23,32 +27,52 @@ const fetchComments = () =>
       () =>
         resolve([
           {
-            id: 1,
+            _id: 1,
             author: "Alice",
             articleTitle: "The Future of AI in Content Creation",
             content: "Great article! I especially liked the part about...",
-            postedAt: "2023-06-02",
+            createdAt: "2023-06-02",
           },
           {
-            id: 2,
+            _id: 2,
             author: "Bob",
             articleTitle: "10 Tips for Productive Writing",
             content:
               "These tips are really helpful. I've already started implementing...",
-            postedAt: "2023-05-16",
+            createdAt: "2023-05-16",
           },
           {
-            id: 3,
+            _id: 3,
             author: "Charlie",
             articleTitle: "How to Build a Successful Blog",
             content:
               "This is exactly what I needed to read. Thanks for sharing!",
-            postedAt: "2023-05-02",
+            createdAt: "2023-05-02",
           },
         ]),
       1500
     )
   );
+
+function CommentSkeleton() {
+  return (
+    <Card className="animate-pulse">
+      <CardContent className="p-4">
+        <div className="flex items-start space-x-4">
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <div className="space-y-2 flex-1">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-3/4" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 export function CommentsList() {
   const [comments, setComments] = useState<Comment[]>([]);
@@ -77,14 +101,7 @@ export function CommentsList() {
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-start space-x-4">
-                <Skeleton className="h-10 w-10 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
-                  <Skeleton className="h-4 w-[150px]" />
-                </div>
-              </div>
+              <CommentSkeleton key={i} />
             ))}
           </div>
         ) : error ? (
@@ -92,27 +109,45 @@ export function CommentsList() {
         ) : (
           <div className="space-y-4">
             {comments.map((comment) => (
-              <div key={comment.id} className="flex items-start space-x-4">
-                <Avatar>
-                  <AvatarImage
-                    src={`/placeholder.svg?height=40&width=40`}
-                    alt={comment.author}
-                  />
-                  <AvatarFallback>{comment.author[0]}</AvatarFallback>
-                </Avatar>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {comment.author}
-                    <span className="ml-3 text-xs text-muted-foreground">
-                      ({new Date(comment.postedAt).toLocaleDateString()})
-                    </span>
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    On &ldquo;{comment.articleTitle}&rdquo;
-                  </p>
-                  <p className="text-sm">{comment.content}</p>
-                </div>
-              </div>
+              <Card
+                key={comment._id}
+                className="hover:bg-accent transition-colors duration-200"
+              >
+                <CardContent className="p-4">
+                  <Link
+                    href={`/articles/${encodeURIComponent(
+                      comment.articleTitle.toLowerCase().replace(/ /g, "-")
+                    )}`}
+                    className="block"
+                  >
+                    <div className="flex items-start space-x-4">
+                      <Avatar>
+                        <AvatarImage
+                          src={`/placeholder.svg?height=40&width=40`}
+                          alt={comment.author}
+                        />
+                        <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1 flex-1">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-medium leading-none">
+                            {comment.author}
+                          </p>
+                          <div className="flex items-center text-xs text-muted-foreground">
+                            <CalendarIcon className="mr-1 h-3 w-3" />
+                            {new Date(comment.createdAt).toLocaleDateString()}
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground flex items-center">
+                          <MessageCircle className="mr-1 h-3 w-3" />
+                          On &ldquo;{comment.articleTitle}&rdquo;
+                        </p>
+                        <p className="text-sm">{comment.content}</p>
+                      </div>
+                    </div>
+                  </Link>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}

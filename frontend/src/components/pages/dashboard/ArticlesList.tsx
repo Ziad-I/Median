@@ -1,4 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -7,6 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CalendarIcon, EyeIcon } from "lucide-react";
+import { generateSlug } from "@/lib/slugify";
 
 interface Article {
   _id: string;
@@ -43,6 +48,28 @@ const fetchArticles = () =>
     )
   );
 
+function ArticleCardSkeleton() {
+  return (
+    <Card className="animate-pulse">
+      <CardContent className="p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between">
+          <div className="space-y-2 flex-1">
+            <Skeleton className="h-5 w-3/4" />
+            <div className="flex items-center">
+              <Skeleton className="h-4 w-4 mr-1" />
+              <Skeleton className="h-4 w-1/3" />
+            </div>
+          </div>
+          <div className="flex items-center mt-2 sm:mt-0">
+            <Skeleton className="h-4 w-4 mr-1" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function ArticlesList() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,13 +97,7 @@ export function ArticlesList() {
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center space-x-4">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
-                </div>
-              </div>
+              <ArticleCardSkeleton key={i} />
             ))}
           </div>
         ) : error ? (
@@ -84,20 +105,34 @@ export function ArticlesList() {
         ) : (
           <div className="space-y-4">
             {articles.map((article) => (
-              <div key={article._id} className="flex items-center">
-                <div className="space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {article.title}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Published on {article.createdAt}
-                  </p>
-                  <p className="ml-auto text-sm font-medium">
-                    {article.views} views
-                  </p>
-                </div>
-                {/* <div className="ml-auto font-medium">{article.views} views</div> */}
-              </div>
+              <Link
+                href={`/articles/${generateSlug(article.title)}`}
+                key={article._id}
+                className="block"
+              >
+                <Card className="hover:bg-accent transition-colors duration-200">
+                  <CardContent className="p-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between">
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-semibold leading-none">
+                          {article.title}
+                        </h3>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <CalendarIcon className="mr-1 h-4 w-4" />
+                          Published on{" "}
+                          {new Date(article.createdAt).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <div className="flex items-center mt-2 sm:mt-0">
+                        <EyeIcon className="mr-1 h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm font-medium">
+                          {article.views.toLocaleString()} views
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         )}
