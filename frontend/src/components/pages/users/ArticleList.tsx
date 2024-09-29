@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/UseToast";
+import { generateSlug } from "@/lib/slugify";
+import Link from "next/link";
 // import { Article } from "@/lib/definitions";
 
 type Article = {
@@ -41,11 +43,27 @@ const fetchArticles = async (userId: string): Promise<Article[]> => {
   ];
 };
 
+function ArticleCardSkeleton() {
+  return (
+    <Card className="mb-4">
+      <CardHeader>
+        <Skeleton className="h-6 w-3/4" />
+      </CardHeader>
+      <CardContent>
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-2/3 mb-4" />
+        <Skeleton className="h-3 w-1/4" />
+      </CardContent>
+    </Card>
+  );
+}
+
 function ArticleListSkeleton() {
   return (
     <div className="space-y-4">
       {[1, 2, 3].map((i) => (
-        <Skeleton key={i} className="h-[200px] w-full" />
+        <ArticleCardSkeleton key={i} />
       ))}
     </div>
   );
@@ -110,19 +128,24 @@ export function ArticleList({
   return (
     <div className="space-y-4">
       {articles.map((article) => (
-        <Card key={article._id} className="mb-4">
-          <CardHeader>
-            <CardTitle>{article.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-2">
-              {article.summary}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Published on {article.createdAt.toLocaleDateString()}
-            </p>
-          </CardContent>
-        </Card>
+        <Link
+          href={`/articles/${generateSlug(article.title)}`}
+          key={article._id}
+        >
+          <Card className="mb-4 hover:bg-accent transition-colors duration-200">
+            <CardHeader>
+              <CardTitle>{article.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-2">
+                {article.summary}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Published on {article.createdAt.toLocaleDateString()}
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </div>
   );

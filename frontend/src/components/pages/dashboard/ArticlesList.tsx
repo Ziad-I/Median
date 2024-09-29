@@ -9,9 +9,9 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Article {
-  id: number;
+  _id: string;
   title: string;
-  publishDate: string;
+  createdAt: string;
   views: number;
 }
 
@@ -21,21 +21,21 @@ const fetchArticles = () =>
       () =>
         resolve([
           {
-            id: 1,
+            _id: "1",
             title: "The Future of AI in Content Creation",
-            publishDate: "2023-06-01",
+            createdAt: "2023-06-01",
             views: 3400,
           },
           {
-            id: 2,
+            _id: "2",
             title: "10 Tips for Productive Writing",
-            publishDate: "2023-05-15",
+            createdAt: "2023-05-15",
             views: 2100,
           },
           {
-            id: 3,
+            _id: "3",
             title: "How to Build a Successful Blog",
-            publishDate: "2023-05-01",
+            createdAt: "2023-05-01",
             views: 1800,
           },
         ]),
@@ -84,13 +84,13 @@ export function ArticlesList() {
         ) : (
           <div className="space-y-4">
             {articles.map((article) => (
-              <div key={article.id} className="flex items-center">
+              <div key={article._id} className="flex items-center">
                 <div className="space-y-1">
                   <p className="text-sm font-medium leading-none">
                     {article.title}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Published on {article.publishDate}
+                    Published on {article.createdAt}
                   </p>
                   <p className="ml-auto text-sm font-medium">
                     {article.views} views
