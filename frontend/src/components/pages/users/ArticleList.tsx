@@ -3,14 +3,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useParams } from "next/navigation";
+import { useToast } from "@/hooks/UseToast";
 // import { Article } from "@/lib/definitions";
 
 type Article = {
-  id: string;
+  _id: string;
   title: string;
   summary: string;
-  createdAt: string;
+  createdAt: Date;
 };
 
 // Simulated API call
@@ -18,25 +18,25 @@ const fetchArticles = async (userId: string): Promise<Article[]> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return [
     {
-      id: "1",
+      _id: "1",
       title: "The Future of AI in Web Development",
       summary:
         "Exploring how artificial intelligence is shaping the landscape of web development and what it means for developers.",
-      createdAt: "2023-05-15T10:00:00Z",
+      createdAt: new Date(),
     },
     {
-      id: "2",
+      _id: "2",
       title: "Mastering React Hooks",
       summary:
         "A comprehensive guide to using React Hooks effectively in your projects.",
-      createdAt: "2023-04-22T14:30:00Z",
+      createdAt: new Date(),
     },
     {
-      id: "3",
+      _id: "3",
       title: "The Rise of Serverless Architecture",
       summary:
         "Understanding the benefits and challenges of serverless architecture in modern web applications.",
-      createdAt: "2023-03-10T09:15:00Z",
+      createdAt: new Date(),
     },
   ];
 };
@@ -51,36 +51,56 @@ function ArticleListSkeleton() {
   );
 }
 
-export function ArticleList() {
-  const params = useParams();
-  const userId = params.userId as string;
+interface ArticleListProps {
+  userId: string | undefined;
+  userLoading: boolean;
+  userError: string | null;
+}
+
+export function ArticleList({
+  userId,
+  userLoading,
+  userError,
+}: ArticleListProps) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   // Memoize the API call to avoid re-fetching unnecessarily
   const loadArticles = useCallback(async () => {
+    if (!userId) return;
+
     setIsLoading(true);
     try {
       const data = await fetchArticles(userId);
       setArticles(data);
     } catch (err) {
       setError("Failed to fetch articles. Please try again.");
+      toast({
+        title: "Error",
+        description: "Failed to fetch user articles. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
   }, [userId]);
 
   useEffect(() => {
-    loadArticles();
-  }, [loadArticles]);
+    if (userId && !userLoading) {
+      loadArticles();
+    }
+  }, [userId, userLoading, loadArticles]);
 
-  if (isLoading) {
+  if (isLoading || userLoading) {
     return <ArticleListSkeleton />;
   }
 
-  if (error) {
-    return <div className="text-destructive-foreground">{error}</div>;
+  if (userError || error) {
+    return (
+      <div className="text-destructive-foreground">{userError || error}</div>
+    );
   }
 
   if (articles.length === 0) {
@@ -90,7 +110,7 @@ export function ArticleList() {
   return (
     <div className="space-y-4">
       {articles.map((article) => (
-        <Card key={article.id} className="mb-4">
+        <Card key={article._id} className="mb-4">
           <CardHeader>
             <CardTitle>{article.title}</CardTitle>
           </CardHeader>
@@ -99,7 +119,7 @@ export function ArticleList() {
               {article.summary}
             </p>
             <p className="text-xs text-muted-foreground">
-              Published on {new Date(article.createdAt).toLocaleDateString()}
+              Published on {article.createdAt.toLocaleDateString()}
             </p>
           </CardContent>
         </Card>

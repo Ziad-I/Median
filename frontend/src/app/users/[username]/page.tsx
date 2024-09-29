@@ -10,11 +10,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { toast } from "@/hooks/UseToast";
 
-const fetchUserProfile = async (userId: string): Promise<User> => {
+const fetchUserProfile = async (username: string): Promise<User> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return {
-    _id: userId,
-    username: "JohnDoe",
+    _id: "userId",
+    username: username,
     name: "John Doe",
     bio: "Passionate writer and tech enthusiast. Sharing thoughts on AI, web development, and the future of technology.",
     avatar: "/placeholder.svg?height=100&width=100",
@@ -29,13 +29,13 @@ export default function UserProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const params = useParams();
-  const userId = params.userId as string;
+  const username = params.username as string;
 
   useEffect(() => {
     const loadUserProfile = async () => {
       setIsLoading(true);
       try {
-        const profile = await fetchUserProfile(userId);
+        const profile = await fetchUserProfile(username);
         setUserProfile(profile);
       } catch (error) {
         setError("Failed to fetch user profile. Please try again.");
@@ -68,13 +68,27 @@ export default function UserProfilePage() {
               <TabsTrigger value="following">Following</TabsTrigger>
             </TabsList>
             <TabsContent value="articles">
-              <ArticleList />
+              <ArticleList
+                userId={userProfile?._id}
+                userLoading={isLoading}
+                userError={error}
+              />
             </TabsContent>
             <TabsContent value="followers">
-              <UserPreviewList type="followers" />
+              <UserPreviewList
+                type="followers"
+                userId={userProfile?._id}
+                userLoading={isLoading}
+                userError={error}
+              />
             </TabsContent>
             <TabsContent value="following">
-              <UserPreviewList type="following" />
+              <UserPreviewList
+                type="following"
+                userId={userProfile?._id}
+                userLoading={isLoading}
+                userError={error}
+              />
             </TabsContent>
           </Tabs>
         </CardContent>

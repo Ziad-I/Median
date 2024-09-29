@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useParams } from "next/navigation";
+import { useToast } from "@/hooks/UseToast";
 
 type UserPreview = {
   id: string;
@@ -51,36 +51,58 @@ function UserPreviewListSkeleton() {
   );
 }
 
-export function UserPreviewList({ type }: { type: "followers" | "following" }) {
-  const params = useParams();
-  const userId = params.userId as string;
+interface UserPreviewListProps {
+  type: "followers" | "following";
+  userId: string | undefined;
+  userLoading: boolean;
+  userError: string | null;
+}
+
+export function UserPreviewList({
+  type,
+  userId,
+  userLoading,
+  userError,
+}: UserPreviewListProps) {
   const [users, setUsers] = useState<UserPreview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   // Memoize the user fetching function
   const loadUsers = useCallback(async () => {
+    if (!userId) return;
+
     setIsLoading(true);
     try {
       const data = await fetchUsers(type, userId);
       setUsers(data);
     } catch (err) {
       setError(`Failed to fetch ${type}. Please try again.`);
+      toast({
+        title: "Error",
+        description: "Failed to fetch user articles. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
   }, [type, userId]);
 
   useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
+    if (userId && !userLoading) {
+      loadUsers();
+    }
+  }, [userId, userLoading, loadUsers]);
 
-  if (isLoading) {
+  if (isLoading || userLoading) {
     return <UserPreviewListSkeleton />;
   }
 
-  if (error) {
-    return <div className="text-destructive-foreground">{error}</div>;
+  if (userError || error) {
+    return (
+      <div className="text-destructive-foreground">{userError || error}</div>
+    );
   }
 
   if (users.length === 0) {

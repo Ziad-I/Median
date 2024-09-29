@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { CalendarDays, Users } from "lucide-react";
 import { useToast } from "@/hooks/UseToast";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useParams } from "next/navigation";
 import { User } from "@/lib/definitions";
 
 interface UserProfileHeaderProps {
@@ -39,7 +38,6 @@ export function UserProfileHeader({
   userProfile,
   error,
 }: UserProfileHeaderProps) {
-  const params = useParams();
   const { toast } = useToast();
 
   // const handleFollowToggle = useCallback(async () => {
@@ -108,7 +106,7 @@ export function UserProfileHeader({
           </div>
           <div className="flex items-center">
             <CalendarDays className="mr-2 h-4 w-4" />
-            <span>Joined {userProfile.createdAt.toLocaleDateString()}</span>
+            <span>Joined {userProfile.createdAt?.toLocaleDateString()}</span>
           </div>
         </div>
       </div>
