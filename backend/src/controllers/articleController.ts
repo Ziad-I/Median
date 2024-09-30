@@ -31,7 +31,11 @@ const getArticle = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Invalid article ID" });
   }
 
-  const article = await Article.findById(articleId)
+  const article = await Article.findByIdAndUpdate(
+    articleId,
+    { $inc: { views: 1 } }, // Increment the views by 1
+    { new: true } // Return the updated article
+  )
     .populate({
       path: "comments",
       select: "content createdAt",

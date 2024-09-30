@@ -10,6 +10,7 @@ const articleSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  views: { type: Number, default: 0 },
 });
 
 articleSchema.index({ title: 1 }, { collation: { locale: "en", strength: 2 } });
