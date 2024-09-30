@@ -13,12 +13,12 @@ const commentOnArticle = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Invalid article ID" });
   }
 
-  const article = Article.findById(articleId);
+  const article = await Article.findById(articleId);
   if (!article) {
     return res.status(404).json({ message: "Article not found" });
   }
 
-  const content = req.params.content;
+  const content = req.body.content;
   if (!content) {
     return res.status(400).json({ message: "Invalid comment content" });
   }
@@ -27,6 +27,7 @@ const commentOnArticle = async (req: Request, res: Response) => {
     content,
     author: userId,
     article: articleId,
+    articleTitle: article.title,
   });
 
   await comment.save();

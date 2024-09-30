@@ -140,7 +140,7 @@ router
 
 /**
  * @swagger
- * /comments/article/{articleId}/comments:
+ * /comments/article/{articleId}:
  *   get:
  *     summary: Get all comments for an article
  *     tags: [Comments]
@@ -159,11 +159,11 @@ router
  *       400:
  *         description: Invalid article ID
  */
-router.get("/article/:articleId/comments", getAllCommentsByArticle);
+router.get("/article/:articleId", getAllCommentsByArticle);
 
 /**
  * @swagger
- * /comments/author/{authorId}/comments:
+ * /comments/author/{authorId}:
  *   get:
  *     summary: Get all comments by an author
  *     tags: [Comments]
@@ -184,10 +184,6 @@ router.get("/article/:articleId/comments", getAllCommentsByArticle);
  *       400:
  *         description: Invalid author ID
  */
-router.get(
-  "/author/:authorId/comments",
-  authMiddleware,
-  getAllCommentsByAuthor
-);
+router.get("/author/:authorId", authMiddleware, getAllCommentsByAuthor);
 
 export default router;
