@@ -11,28 +11,30 @@ export type User = {
 };
 
 export type Article = {
-  _id: string;
-  title: string;
-  content: string;
-  summary: string;
-  image: string;
-  author: User;
-  tags: Tag[];
-  createdAt: Date;
-  updatedAt: Date;
-  comments: Comment[];
+  _id?: string;
+  title?: string;
+  content?: string;
+  summary?: string;
+  image?: string;
+  author?: User;
+  tags?: Tag[];
+  createdAt?: Date;
+  updatedAt?: Date;
+  comments?: Comment[];
+  views?: number;
 };
 
 export type Comment = {
-  _id: string;
-  content: string;
+  _id?: string;
+  content?: string;
   article?: Article;
-  author: {
+  author?: {
     _id: string;
     name: string;
     avatar: string;
   };
-  createdAt: Date;
+  articleTitle?: string;
+  createdAt?: Date;
 };
 
-export type Tag = { _id: string; name: string };
+export type Tag = { _id?: string; name?: string };
