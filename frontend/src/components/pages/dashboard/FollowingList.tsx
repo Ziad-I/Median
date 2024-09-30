@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   Card,
@@ -16,16 +16,10 @@ import { CalendarIcon } from "lucide-react";
 import { useAuthStore } from "@/providers/AuthStoreProvider";
 import { useToast } from "@/hooks/UseToast";
 import axios from "axios";
-interface Following {
-  _id: string;
-  name: string;
-  username: string;
-  avatar: string;
-  createdAt: Date;
-}
+import { User } from "@/lib/definitions";
 
-const fetchFollowing = () =>
-  new Promise<Following[]>((resolve) =>
+const simulateFetchFollowing = () =>
+  new Promise<User[]>((resolve) =>
     setTimeout(
       () =>
         resolve([
@@ -72,14 +66,38 @@ function FollowingCardSkeleton() {
 }
 
 export function FollowingList() {
-  const [following, setFollowing] = useState<Following[]>([]);
+  const [following, setFollowing] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { accessToken } = useAuthStore((state) => state);
+  const { userId, accessToken } = useAuthStore((state) => state);
   const { toast } = useToast();
 
+  const fetchFollowings = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/followings/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Attach the access token
+          },
+        }
+      );
+      setFollowing(response.data);
+    } catch (error) {
+      setError("Failed to load followings");
+      toast({
+        title: "Error",
+        description: `Failed to fetch followings. Please try again.`,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [userId, accessToken]);
+
   useEffect(() => {
-    fetchFollowing()
+    simulateFetchFollowing()
       .then((data) => {
         setFollowing(data);
         setLoading(false);
@@ -93,7 +111,8 @@ export function FollowingList() {
         });
         setLoading(false);
       });
-  }, []);
+    // fetchFollowings();
+  }, [fetchFollowings]);
 
   const handleUnfollow = async (userId: string) => {
     try {
@@ -147,7 +166,7 @@ export function FollowingList() {
                 <CardContent className="flex items-center space-x-4 py-4">
                   <Avatar>
                     <AvatarImage src={follow.avatar} alt={follow.name} />
-                    <AvatarFallback>{follow.name[0]}</AvatarFallback>
+                    <AvatarFallback>{follow.name?.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <p className="text-sm font-medium leading-none">
@@ -155,7 +174,7 @@ export function FollowingList() {
                     </p>
                     <p className="text-sm text-muted-foreground flex items-center mt-1">
                       <CalendarIcon className="mr-1 h-3 w-3" />
-                      Joined on {follow.createdAt.toLocaleDateString()}
+                      Joined on {follow.createdAt?.toLocaleDateString()}
                     </p>
                   </div>
                   <div className="flex space-x-2">
@@ -167,7 +186,7 @@ export function FollowingList() {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => handleUnfollow(follow._id)}
+                      onClick={() => handleUnfollow(follow._id as string)}
                     >
                       Unfollow
                     </Button>

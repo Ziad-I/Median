@@ -56,14 +56,14 @@ export function UserProfileCard() {
           <CardContent className="flex items-center space-x-4">
             <Avatar className="h-20 w-20">
               <AvatarImage src={userData.avatar} alt={userData.name} />
-              <AvatarFallback>{userData.name[0]}</AvatarFallback>
+              <AvatarFallback>{userData.name?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
               <h2 className="text-2xl font-bold">{userData.name}</h2>
               <p className="test-muted-foreground">{userData.bio}</p>
               <p className="text-sm test-muted-foreground mt-2">
                 <Calendar className="inline-block mr-1 h-4 w-4" />
-                Registered on {userData.createdAt.toLocaleDateString()}
+                Registered on {userData.createdAt?.toLocaleDateString()}
               </p>
             </div>
           </CardContent>
