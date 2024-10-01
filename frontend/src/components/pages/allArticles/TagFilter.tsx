@@ -6,11 +6,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
+import { Tag } from "@/lib/definitions";
 
 interface TagFilterProps {
-  allTags: string[];
-  selectedTags: string[];
-  handleTagToggle: (tag: string) => void;
+  allTags: Tag[];
+  selectedTags: Tag[];
+  handleTagToggle: (tag: Tag) => void;
 }
 
 export default function TagFilter({
@@ -29,17 +30,17 @@ export default function TagFilter({
       <PopoverContent className="w-[200px] p-0">
         <div className="p-4 space-y-2">
           {allTags.map((tag) => (
-            <div key={tag} className="flex items-center space-x-2">
+            <div key={tag._id} className="flex items-center space-x-2">
               <Checkbox
-                id={tag}
+                id={tag._id}
                 checked={selectedTags.includes(tag)}
                 onCheckedChange={() => handleTagToggle(tag)}
               />
               <label
-                htmlFor={tag}
+                htmlFor={tag.name}
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                {tag}
+                {tag.name}
               </label>
             </div>
           ))}

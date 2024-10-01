@@ -42,8 +42,8 @@ export async function fetchArticles(): Promise<Article[]> {
   return articles;
 }
 
-export async function fetchTags(): Promise<string[]> {
-  await delay(500); // Simulate network delay
+export async function fetchTags(): Promise<Tag[]> {
+  await delay(500);
 
   const tags = Array.from(
     new Set(
@@ -52,7 +52,12 @@ export async function fetchTags(): Promise<string[]> {
         `Tag ${(i % 3) + 6}`,
       ]).flat()
     )
-  ).sort();
+  )
+    .sort()
+    .map((tag, index) => ({
+      _id: `${index}`,
+      name: tag,
+    }));
 
   return tags;
 }
@@ -62,18 +67,20 @@ export default function AllArticlesPage() {
   const [searchTerm, setSearchTerm] = useQueryState("search", {
     defaultValue: "",
   });
-  const [selectedTags, setSelectedTags] = useQueryState<string[]>("tags", {
+  const [selectedTags, setSelectedTags] = useQueryState<Tag[]>("tags", {
     defaultValue: [],
-    parse: (value) => (value ? value.split(",") : []),
-    serialize: (value) => value.join(","),
+    parse: (value) =>
+      value ? value.split(",").map((name) => ({ _id: name, name })) : [],
+    serialize: (value) => value.map((tag) => tag.name).join(","),
   });
+
   const [currentPage, setCurrentPage] = useQueryState("page", {
     defaultValue: 1,
     parse: Number,
   });
 
   const [articles, setArticles] = useState<Article[]>([]);
-  const [allTags, setAllTags] = useState<string[]>([]);
+  const [allTags, setAllTags] = useState<Tag[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const itemsPerPage = 10;
@@ -100,10 +107,10 @@ export default function AllArticlesPage() {
 
   const filteredArticles = articles.filter(
     (article) =>
-      article.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      article.title?.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (selectedTags.length === 0 ||
         selectedTags.some((tag) =>
-          article.tags.map((t: Tag) => t.name).includes(tag)
+          article.tags?.map((t: Tag) => t.name).includes(tag.name)
         ))
   );
 
@@ -118,9 +125,11 @@ export default function AllArticlesPage() {
     router.push(`/articles`);
   };
 
-  const handleTagToggle = (tag: string) => {
+  const handleTagToggle = (tag: Tag) => {
     setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+      prev.includes(tag)
+        ? prev.filter((t) => t.name !== tag.name)
+        : [...prev, tag]
     );
   };
 
