@@ -133,7 +133,7 @@ RESET_PASSWORD_TOKEN_EXPIRATION_TIME
 5. Open the app in your browser using the frontend URL.
 
 ## To-Do
-
+- [ ] Remove fetching simulation functions in the frontend.
 - [ ] Implement frontend for password reset flow.
 - [ ] Optimize image handling (e.g., lazy loading or compression).
 - [ ] Improve user notifications (e.g., for new comments, followers).
