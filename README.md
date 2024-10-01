@@ -20,7 +20,7 @@
 ### Article Management
 - Users can post articles with **Markdown** support.
 - Edit or delete articles.
-- Comment on articles, with the ability to edit or delete comments.
+- Comment on articles (Markdown supported), with the ability to edit or delete comments.
 
 ### User Dashboard
 - View user-specific statistics including:
